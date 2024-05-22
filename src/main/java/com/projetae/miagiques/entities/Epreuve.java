@@ -2,8 +2,10 @@ package com.projetae.miagiques.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,8 @@ public class Epreuve {
 
     private int nbParticipants ;
 
+    @OneToOne
+    private StatistiqueEpreuve statistique;
     @OneToMany(mappedBy = "epreuve")
     private ArrayList<Billet> listeBillets ;
 
@@ -44,6 +48,7 @@ public class Epreuve {
 
     @ManyToOne
     private InfrastructureSportive insfrastructureSportive ;
+
 
 
 }
