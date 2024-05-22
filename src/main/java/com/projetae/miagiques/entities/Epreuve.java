@@ -1,10 +1,6 @@
 package com.projetae.miagiques.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +21,7 @@ import java.util.Collection;
 public class Epreuve {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idEpreuve;
 
     private String nom ;
@@ -37,14 +34,15 @@ public class Epreuve {
 
     @OneToOne
     private StatistiqueEpreuve statistique;
+
     @OneToMany(mappedBy = "epreuve")
     private ArrayList<Billet> listeBillets ;
 
     @OneToMany(mappedBy = "epreuve")
     private ArrayList<Resultat> listeResultats ;
 
-    @ManyToOne
-    private Participant participant ;
+    @ManyToMany
+    private ArrayList<Participant> participants ;
 
     @ManyToOne
     private InfrastructureSportive insfrastructureSportive ;

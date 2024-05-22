@@ -1,15 +1,21 @@
 package com.projetae.miagiques.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class InfrastructureSportive {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idInfrastructure;
 
     private String nom ;

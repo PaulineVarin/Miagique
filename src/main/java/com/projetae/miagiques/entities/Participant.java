@@ -1,6 +1,7 @@
 package com.projetae.miagiques.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -21,4 +22,7 @@ public class Participant extends Personne {
 
     @ManyToOne
     private Delegation delegation;
+
+    @ManyToMany
+    private ArrayList<Epreuve> epreuves;
 }
