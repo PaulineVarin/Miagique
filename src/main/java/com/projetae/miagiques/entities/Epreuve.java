@@ -43,7 +43,7 @@ public class Epreuve {
     private Participant participant ;
 
     @ManyToOne
-    private InsfrastructureSportive insfrastructureSportive ;
+    private InfrastructureSportive insfrastructureSportive ;
 
 
 }
