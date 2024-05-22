@@ -1,4 +1,5 @@
 /*
+ * Personne.java                                                22/05/2024
  *
  * @author Morgan Nayet
  */
@@ -14,8 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- *
+/*
+ * Classe abstraite personne sauvegardant les données liées aux différents acteurs
  */
 @Entity
 @AllArgsConstructor
