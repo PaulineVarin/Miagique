@@ -19,7 +19,6 @@ public class Resultat {
     private Long idResultat;
 
     private float temps;
-
     private int points;
 
     private int position;
