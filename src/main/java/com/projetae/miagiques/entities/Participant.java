@@ -1,4 +1,4 @@
 package com.projetae.miagiques.entities;
 
-public class entities {
+public class Participant extends Personne {
 }
