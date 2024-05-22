@@ -26,6 +26,6 @@ public class Billet {
     @ManyToOne
     private Spectateur spectateur ;
 
-
+    @ManyToOne
     private Epreuve epreuve ;
 }
