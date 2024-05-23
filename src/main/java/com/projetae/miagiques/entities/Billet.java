@@ -21,6 +21,7 @@ public class Billet {
 
     private float prix;
 
+    @Enumerated(EnumType.STRING)
     private StatutBillet etat ;
 
     @ManyToOne
