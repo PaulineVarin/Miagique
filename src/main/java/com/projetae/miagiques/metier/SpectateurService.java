@@ -16,7 +16,7 @@ public class SpectateurService {
     }
 
     public Collection<Billet> getBilletsSpectateur(Long idSpectateur) {
-        this.spectateurRepository.findById()
+       return null ;
     }
 
 
