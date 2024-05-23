@@ -1,23 +1,56 @@
 package com.projetae.miagiques.metier;
 
+import com.projetae.miagiques.dao.BilletRepository;
 import com.projetae.miagiques.dao.SpectateurRepository;
 import com.projetae.miagiques.entities.Billet;
+import com.projetae.miagiques.entities.Epreuve;
+import com.projetae.miagiques.utilities.BilletExceptions.BilletAnnulationImpossible;
+import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
+import com.projetae.miagiques.utilities.StatutBillet;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.sql.Timestamp;
+import java.time.Duration;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class SpectateurService {
-    private final SpectateurRepository spectateurRepository ;
+    private final BilletRepository billetRepository ;
 
-    public SpectateurService(SpectateurRepository spectateurRepository) {
-        this.spectateurRepository = spectateurRepository;
+
+    public SpectateurService(BilletRepository billetRepository) {
+        this.billetRepository = billetRepository;
     }
 
-    public Collection<Billet> getBilletsSpectateur(Long idSpectateur) {
-       return null ;
+    public String annulerBillet(Long idBillet, Long idSpectateur) throws BilletInexistant, BilletAnnulationImpossible {
+        Billet bi = this.billetRepository.findByIdBilletIsAndSpectateurId(idBillet, idSpectateur) ;
+        if(isNull(bi)) {
+            throw new BilletInexistant() ;
+        } else {
+            Epreuve e = bi.getEpreuve() ;
+            Timestamp dateEpreuve = e.getDate() ;
+            Timestamp dateCourante = new Timestamp(System.currentTimeMillis()) ;
+            Long differenceJours = Duration.between(dateCourante.toLocalDateTime(),dateEpreuve.toLocalDateTime()).toDays() ;
+
+            if(differenceJours < 3) {
+                throw new BilletAnnulationImpossible() ;
+            }
+            else {
+                bi.setEtat(StatutBillet.ANNULE);
+                this.billetRepository.save(bi) ;
+                float montantRembourse = 0 ;
+
+                if(differenceJours > 7 ) {
+                    montantRembourse = bi.getPrix() ;
+                }
+                else {
+                    montantRembourse = (float) (bi.getPrix() * 0.5);
+                }
+
+                String m = "Opération de remboursement réussi : " + montantRembourse ;
+                return m ;
+            }
+        }
     }
-
-
 }
