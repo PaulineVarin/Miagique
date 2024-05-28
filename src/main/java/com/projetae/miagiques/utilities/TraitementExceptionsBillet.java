@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class TraitementExceptionsBillet {
     @ExceptionHandler(BilletInexistant.class)
     public ResponseEntity<String> gererBilletInexistant (HttpServletRequest requete, BilletInexistant ex) {
-        return new ResponseEntity<>("Ce billet n'est pas trouvable dans la base", HttpStatus.CONFLICT) ;
+        return new ResponseEntity<>("Ce billet n'est pas trouvable dans la base", ex.getStatus()) ;
     }
 
     @ExceptionHandler(BilletAnnulationImpossible.class)
