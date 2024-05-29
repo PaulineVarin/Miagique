@@ -3,6 +3,7 @@ package com.projetae.miagiques.utilities;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletAnnulationImpossible;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
 import com.projetae.miagiques.utilities.PersonneExceptions.RoleNotAllowException;
+import com.projetae.miagiques.utilities.spectateurExceptions.TooManyBilletsException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,10 @@ public class TraitementExceptions {
     @ExceptionHandler(RoleNotAllowException.class)
     public ResponseEntity<String> gererRoleNotAllowException (HttpServletRequest requete, RoleNotAllowException ex){
         return new ResponseEntity<>("You are not authorized to access this service", ex.getStatus());
+    }
+
+    @ExceptionHandler(TooManyBilletsException.class)
+    public ResponseEntity<String> gererTooManyBilletsException(HttpServletRequest request, TooManyBilletsException ex){
+        return new ResponseEntity<>("Ce spectateur possède trop de billet", ex.getStatus());
     }
 }
