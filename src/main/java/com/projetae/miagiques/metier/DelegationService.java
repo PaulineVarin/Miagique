@@ -18,23 +18,22 @@ public class DelegationService {
 
     public Delegation creerDelegation(String nom) throws DelegationExistante {
         Delegation delegation = this.delegationRepository.findByNom(nom);
-        if(delegation == null) {
-            delegation = new Delegation(nom);
-            this.delegationRepository.save(delegation);
-        } else {
+        if(delegation != null) {
             throw new DelegationExistante();
+
         }
+        delegation = new Delegation(nom);
+        this.delegationRepository.save(delegation);
         return delegation;
     }
 
     public void supprimerDelegation(Long idD) throws DelegationInexistante {
-        if(this.delegationRepository.findById(idD).isPresent()) {
-            Delegation delegation = this.delegationRepository.findById(idD).get();
-            this.delegationRepository.deleteById(idD);
-        } else {
+        if(!this.delegationRepository.findById(idD).isPresent()) {
             throw new DelegationInexistante();
-        }
 
+        }
+        Delegation delegation = this.delegationRepository.findById(idD).get();
+        this.delegationRepository.deleteById(idD);
     }
 
 }
