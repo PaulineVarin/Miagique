@@ -1,9 +1,27 @@
 package com.projetae.miagiques.exposition;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.projetae.miagiques.entities.Delegation;
+import com.projetae.miagiques.metier.DelegationService;
+import com.projetae.miagiques.utilities.DelegationExistante;
+import com.projetae.miagiques.utilities.DelegationInexistante;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/delegation")
 public class DelegationController {
+
+    @Autowired
+    private DelegationService delegationService;
+
+    @PostMapping("/creerDelegation")
+    public Delegation creerDelegation( @RequestBody String nom) throws DelegationExistante {
+        return delegationService.creerDelegation(nom);
+    }
+
+    @DeleteMapping("/supprimerDelegation")
+    public void supprimerDelegation(@RequestBody Long idD) throws DelegationInexistante {
+       delegationService.supprimerDelegation(idD);
+    }
+
 }
