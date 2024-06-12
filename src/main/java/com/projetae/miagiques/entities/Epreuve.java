@@ -48,13 +48,6 @@ public class Epreuve {
     @ManyToOne
     private InfrastructureSportive insfrastructureSportive ;
 
-    public Epreuve(String nomE, Timestamp dateE, int nbPlacesSpectateurE, int nbParticipantsE) {
-        this.nom = nomE ;
-        this.date = dateE ;
-        this.nbPlacesSpectateur = nbPlacesSpectateurE;
-        this.nbParticipants = nbParticipantsE ;
-    }
-
     public Epreuve(String nomE, Timestamp dateE, int nbPlacesSpectateurE, int nbParticipantsE, InfrastructureSportive infrastructureSportiveE) {
         this.nom = nomE ;
         this.date = dateE ;

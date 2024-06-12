@@ -10,12 +10,11 @@ import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
 import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveInexistant;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+
 import java.util.Date;
 import java.util.Map;
 
