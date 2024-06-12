@@ -1,5 +1,6 @@
 package com.projetae.miagiques.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -36,16 +37,34 @@ public class Epreuve {
     private StatistiqueEpreuve statistique;
 
     @OneToMany(mappedBy = "epreuve")
-    private ArrayList<Billet> listeBillets ;
+    private Collection<Billet> listeBillets ;
 
     @OneToMany(mappedBy = "epreuve")
-    private ArrayList<Resultat> listeResultats ;
+    private Collection<Resultat> listeResultats ;
 
     @ManyToMany
-    private ArrayList<Participant> participants ;
+    private Collection<Participant> participants ;
 
     @ManyToOne
     private InfrastructureSportive insfrastructureSportive ;
+
+    public Epreuve(String nomE, Timestamp dateE, int nbPlacesSpectateurE, int nbParticipantsE) {
+        this.nom = nomE ;
+        this.date = dateE ;
+        this.nbPlacesSpectateur = nbPlacesSpectateurE;
+        this.nbParticipants = nbParticipantsE ;
+    }
+
+    public Epreuve(String nomE, Timestamp dateE, int nbPlacesSpectateurE, int nbParticipantsE, InfrastructureSportive infrastructureSportiveE) {
+        this.nom = nomE ;
+        this.date = dateE ;
+        this.nbPlacesSpectateur = nbPlacesSpectateurE;
+        this.nbParticipants = nbParticipantsE ;
+        this.insfrastructureSportive = infrastructureSportiveE ;
+    }
+
+
+
 
 
 

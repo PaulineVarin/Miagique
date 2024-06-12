@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,6 +30,6 @@ public class Delegation {
     private int nbMedaillesBronze;
 
     @OneToMany(mappedBy = "delegation")
-    private ArrayList<Participant> participants;
+    private Collection<Participant> participants;
 
 }

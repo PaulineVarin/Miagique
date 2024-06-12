@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/spectateurs")
+@RequestMapping("/spectateurs/")
 public class SpectateurController {
     @Autowired
     private SpectateurService spectateurService ;
@@ -22,8 +22,8 @@ public class SpectateurController {
     public Collection<Billet> getAllBillets(@PathVariable("id_spectateur") Long idSpectateur) {
         return this.spectateurService.getAllBillets(idSpectateur) ;
     }
-    @PutMapping("/{id_spectateur}/annulerBillet/{id_billet}")
-    public String annulerBillet(@PathVariable("id_spectateur") Long idSpectateur,@PathVariable("id_billet") Long idBillet) throws BilletInexistant, BilletAnnulationImpossible {
+    @PutMapping("{id_spectateur}/annulerBillet/{id_billet}")
+    public String annulerBillet(@PathVariable("id_billet") Long idBillet, @PathVariable("id_spectateur") Long idSpectateur) throws BilletInexistant, BilletAnnulationImpossible {
         return this.spectateurService.annulerBillet(idBillet, idSpectateur);
     }
 }
