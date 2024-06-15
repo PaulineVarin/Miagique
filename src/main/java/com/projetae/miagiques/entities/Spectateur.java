@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @AllArgsConstructor
@@ -17,5 +18,5 @@ import java.util.ArrayList;
 public class Spectateur extends Personne {
 
     @OneToMany(mappedBy = "spectateur")
-    private ArrayList<Billet> billets;
+    private Collection<Billet> billets;
 }

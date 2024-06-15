@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @AllArgsConstructor
@@ -18,11 +19,11 @@ import java.util.ArrayList;
 public class Participant extends Personne {
 
     @OneToMany(mappedBy = "participant")
-    private ArrayList<Resultat> resultats;
+    private Collection<Resultat> resultats;
 
     @ManyToOne
     private Delegation delegation;
 
     @ManyToMany
-    private ArrayList<Epreuve> epreuves;
+    private Collection<Epreuve> epreuves;
 }
