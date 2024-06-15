@@ -1,5 +1,6 @@
 package com.projetae.miagiques.exposition;
 
+import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.entities.Epreuve;
 import com.projetae.miagiques.entities.InfrastructureSportive;
 import com.projetae.miagiques.metier.OrganisateurService;
@@ -34,7 +35,7 @@ public class OrganisateurController {
      * @throws ParseException
      */
     @PostMapping("/epreuves")
-    public Epreuve creationEpreuve(@RequestBody Map<String, Object> epreuveInfos) throws EpreuveExiste, InfrastructureSportiveInexistant, CapaciteEpreuveSuperieur, ParseException {
+    public EpreuveDTO creationEpreuve(@RequestBody Map<String, Object> epreuveInfos) throws EpreuveExiste, InfrastructureSportiveInexistant, CapaciteEpreuveSuperieur, ParseException {
         return this.organisateurService.creationEpreuve(epreuveInfos) ;
     }
 

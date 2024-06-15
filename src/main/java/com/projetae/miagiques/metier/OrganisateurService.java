@@ -2,12 +2,14 @@ package com.projetae.miagiques.metier;
 
 import com.projetae.miagiques.dao.EpreuveRepository;
 import com.projetae.miagiques.dao.InfrastructureSportiveRepository;
+import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.entities.Epreuve;
 import com.projetae.miagiques.entities.InfrastructureSportive;
 import com.projetae.miagiques.utilities.EpreuveExceptions.CapaciteEpreuveSuperieur;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveExiste;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
 import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveInexistant;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -31,7 +33,7 @@ public class OrganisateurService {
         this.infrastructureSportiveRepository = infrastructureSportiveRepository;
     }
 
-    public Epreuve creationEpreuve(Map<String, Object> ep) throws EpreuveExiste, InfrastructureSportiveInexistant, CapaciteEpreuveSuperieur, ParseException {
+    public EpreuveDTO creationEpreuve(Map<String, Object> ep) throws EpreuveExiste, InfrastructureSportiveInexistant, CapaciteEpreuveSuperieur, ParseException {
 
         String nomEpreuve = ep.get("nom").toString() ;
         Long idInfrastructure = ((Number) ep.get("idInfrastructure")).longValue() ;
@@ -53,7 +55,10 @@ public class OrganisateurService {
             Timestamp t = new Timestamp(d.getTime()) ;
 
             Epreuve epreuve = new Epreuve(nomEpreuve,t,nbPlacesSpectateurs,nbParticipants,i) ;
-            return this.epreuveRepository.save(epreuve);
+            this.epreuveRepository.save(epreuve);
+            ModelMapper modelMapper = new ModelMapper();
+            EpreuveDTO epreuveDTO = modelMapper.map(epreuve, EpreuveDTO.class);
+            return epreuveDTO ;
         }
         else {
             throw new EpreuveExiste() ;
