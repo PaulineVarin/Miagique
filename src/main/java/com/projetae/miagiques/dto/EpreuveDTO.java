@@ -1,5 +1,7 @@
 package com.projetae.miagiques.dto;
 
+import com.projetae.miagiques.entities.InfrastructureSportive;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +23,7 @@ public class EpreuveDTO {
     private int nbPlacesSpectateur ;
 
     private int nbParticipants ;
+
+    private Long insfrastructureSportiveId ;
 
 }

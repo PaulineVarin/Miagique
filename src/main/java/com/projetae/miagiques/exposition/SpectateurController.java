@@ -22,7 +22,7 @@ public class SpectateurController {
     /**
      *
      * @param idSpectateur représente l'id d'un spectateur
-     * @return la liste des billets de l'utilisateur
+     * @return la liste des billets du spectateur
      */
     @GetMapping({"{id_spectateur}/listerBillets"})
     public Collection<Billet> getAllBillets(@PathVariable("id_spectateur") Long idSpectateur) {

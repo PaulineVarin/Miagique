@@ -24,14 +24,9 @@ public class TraitementExceptionsEpreuve {
         return new ResponseEntity<>("Capacité non conforme de l'épreuve pour l'infrastructure correspondante", HttpStatus.BAD_REQUEST) ;
     }
 
-    @ExceptionHandler(ParseException.class)
-    public ResponseEntity<String> gererErreurParse(HttpServletRequest requete, ParseException ex) {
-        return new ResponseEntity<>("Erreur de parsing au niveau de la date de l'épreuve. Merci de respecter le format dd-mm-yyyy", HttpStatus.BAD_REQUEST) ;
-    }
-
     @ExceptionHandler(EpreuveInexistante.class)
     public ResponseEntity<String> gererEpreuveInexistante(HttpServletRequest requete, EpreuveInexistante ex) {
-        return new ResponseEntity<>("Epreuve non trouvé dans la base", HttpStatus.CONFLICT) ;
+        return new ResponseEntity<>("Epreuve non trouvé dans la base", HttpStatus.NOT_FOUND) ;
     }
 
 
