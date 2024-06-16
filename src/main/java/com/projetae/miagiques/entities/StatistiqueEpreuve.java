@@ -25,6 +25,12 @@ public class StatistiqueEpreuve {
 
     private int nbPlaces;
 
+    public StatistiqueEpreuve(Epreuve e, int nbPlacesRestantes, int nbPlaces) {
+        this.epreuve = e ;
+        this.nbPlacesRestantes = nbPlacesRestantes ;
+        this.nbPlaces = nbPlaces ;
+    }
+
 
 
 }

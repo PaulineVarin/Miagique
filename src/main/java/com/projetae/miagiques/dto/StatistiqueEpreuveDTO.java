@@ -1,5 +1,6 @@
 package com.projetae.miagiques.dto;
 
+import com.projetae.miagiques.entities.Epreuve;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class InfrastructureSportiveDTO {
-    private Long idInfrastructure;
+public class StatistiqueEpreuveDTO {
+    private EpreuveDTO epreuve;
 
-    private String nom ;
+    private int nbPlacesRestantes;
 
-    private int capacite ;
-
-    private String adresse ;
+    private int nbPlaces;
 }

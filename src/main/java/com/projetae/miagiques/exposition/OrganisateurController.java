@@ -1,9 +1,10 @@
 package com.projetae.miagiques.exposition;
 
 import com.projetae.miagiques.dto.EpreuveDTO;
-import com.projetae.miagiques.entities.Billet;
-import com.projetae.miagiques.entities.Epreuve;
+import com.projetae.miagiques.dto.StatistiqueEpreuveDTO;
+import com.projetae.miagiques.entities.StatistiqueEpreuve;
 import com.projetae.miagiques.metier.OrganisateurService;
+import com.projetae.miagiques.metier.StatistiqueEpreuveService;
 import com.projetae.miagiques.utilities.EpreuveExceptions.CapaciteEpreuveSuperieur;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveExiste;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
@@ -23,10 +24,18 @@ public class OrganisateurController {
     @Autowired
     private OrganisateurService organisateurService ;
 
+    @Autowired
+    private StatistiqueEpreuveService statistiqueEpreuveService ;
+
 
     @GetMapping({"/listerEpreuves"})
     public Collection<EpreuveDTO> getAllEpreuves() {
         return this.organisateurService.getAllEpreuves() ;
+    }
+
+    @GetMapping("/statistiquesVentes")
+    public Collection<StatistiqueEpreuveDTO> getStatistiquesVentes() {
+        return this.statistiqueEpreuveService.getStatistiquesVentes() ;
     }
 
     /**

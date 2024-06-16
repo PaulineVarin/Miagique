@@ -26,9 +26,8 @@ public class DelegationService {
     }
 
     public void supprimerDelegation(Long idD) throws DelegationInexistante {
-        if(!this.delegationRepository.findById(idD).isPresent()) {
+        if(this.delegationRepository.findById(idD).isEmpty()) {
             throw new DelegationInexistante();
-
         }
         Delegation delegation = this.delegationRepository.findById(idD).get();
         this.delegationRepository.deleteById(idD);

@@ -16,15 +16,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import static java.util.Objects.isNull;
 
 @Service
 public class OrganisateurService {
+
 
     private final EpreuveRepository epreuveRepository ;
     private final InfrastructureSportiveRepository infrastructureSportiveRepository ;
@@ -44,7 +42,7 @@ public class OrganisateurService {
     public Collection<EpreuveDTO> getAllEpreuves() {
         Collection<Epreuve> epreuveliste = new ArrayList<>() ;
         this.epreuveRepository.findAll().forEach(epreuveliste::add);
-        return ObjectMapperUtils.mapAll(epreuveliste,EpreuveDTO.class);
+        return ObjectMapperUtils.mapAllEpreuves(epreuveliste,EpreuveDTO.class);
     }
 
     public EpreuveDTO creationEpreuve(EpreuveDTO ep) throws EpreuveExiste, InfrastructureSportiveInexistante, CapaciteEpreuveSuperieur {
