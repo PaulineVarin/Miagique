@@ -2,11 +2,9 @@ package com.projetae.miagiques.metier;
 
 import com.projetae.miagiques.dao.DelegationRepository;
 import com.projetae.miagiques.entities.Delegation;
-import com.projetae.miagiques.utilities.DelegationExistante;
-import com.projetae.miagiques.utilities.DelegationInexistante;
+import com.projetae.miagiques.utilities.DelegationExceptions.DelegationExistante;
+import com.projetae.miagiques.utilities.DelegationExceptions.DelegationInexistante;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class DelegationService {

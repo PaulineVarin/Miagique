@@ -26,4 +26,9 @@ public class Participant extends Personne {
 
     @ManyToMany
     private Collection<Epreuve> epreuves;
+
+    public Participant(String nom, String prenom, String email, Delegation delegation) {
+        super(nom, prenom, email);
+        this.delegation = delegation;
+    }
 }
