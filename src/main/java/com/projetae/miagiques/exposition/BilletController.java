@@ -3,17 +3,21 @@ package com.projetae.miagiques.exposition;
 import com.projetae.miagiques.metier.BilletService;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
 import com.projetae.miagiques.utilities.StatutBillet;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/billets")
+@RequestMapping("/billets/{emailUtilisateur}")
 public class BilletController {
 
     @Autowired
     private BilletService billetService;
+
+
+
 
     /**
      * Renvoie si le billet est valide pour l'épreuve ou non

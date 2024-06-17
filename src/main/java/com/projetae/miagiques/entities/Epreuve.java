@@ -1,6 +1,7 @@
 package com.projetae.miagiques.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.projetae.miagiques.dto.EpreuveDTO;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -55,6 +57,15 @@ public class Epreuve {
         this.nbParticipants = nbParticipantsE ;
         this.insfrastructureSportive = infrastructureSportiveE ;
     }
+
+    public void updateEpreuve(EpreuveDTO epUpdate, InfrastructureSportive i) {
+        this.setNom(epUpdate.getNom());
+        this.setDate(epUpdate.getDate());
+        this.setNbPlacesSpectateur(epUpdate.getNbPlacesSpectateur());
+        this.setNbParticipants(epUpdate.getNbParticipants());
+        this.setInsfrastructureSportive(i);
+    }
+
 
 
 

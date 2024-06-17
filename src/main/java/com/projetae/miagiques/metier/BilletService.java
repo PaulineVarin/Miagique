@@ -7,6 +7,8 @@ import com.projetae.miagiques.utilities.StatutBillet;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
 public class BilletService {
 
@@ -34,5 +36,11 @@ public class BilletService {
             throw new BilletInexistant(HttpStatus.NOT_FOUND);
 
         return bi.getEpreuve().getIdEpreuve();
+    }
+
+    public void supprimerBillets(Collection<Billet> listeBillets) {
+        for (Billet b : listeBillets) {
+            this.billetRepository.deleteById(b.getIdBillet());
+        }
     }
 }
