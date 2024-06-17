@@ -4,6 +4,7 @@ import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.dto.OrganisateurDTO;
 import com.projetae.miagiques.dto.StatistiqueEpreuveDTO;
 import com.projetae.miagiques.entities.Organisateur;
+import com.projetae.miagiques.entities.Participant;
 import com.projetae.miagiques.entities.Personne;
 import com.projetae.miagiques.metier.EpreuveService;
 import com.projetae.miagiques.metier.OrganisateurService;
@@ -49,15 +50,10 @@ public class OrganisateurController {
     public boolean testerRole(String mail) throws CompteInexistant, RoleIncorrect {
         ArrayList<Personne> listeRolesPersonne = new ArrayList<>(this.personneService.seConnecter(mail)) ;
 
-        int i = 0;
-        do {
-            if (listeRolesPersonne.get(i) instanceof Organisateur){
-                return true;
-            }
-            i++;
+        if (listeRolesPersonne.stream().noneMatch(p -> p instanceof Organisateur)){
+            throw new RoleIncorrect();
         }
-        while (i < listeRolesPersonne.size());
-        throw new RoleIncorrect() ;
+        return true ;
     }
 
     /**
