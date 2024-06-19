@@ -14,8 +14,6 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 public class EpreuveDTO {
-    private Long idEpreuve;
-
     private String nom ;
 
     private Timestamp date ;

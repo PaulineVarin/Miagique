@@ -12,7 +12,6 @@ import java.util.Collection;
 @Getter
 @Setter
 public class InfrastructureSportiveDTO {
-    private Long idInfrastructure;
 
     private String nom ;
 
