@@ -11,6 +11,7 @@ import com.projetae.miagiques.utilities.ParticipantExceptions.ParticipantInexist
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import com.projetae.miagiques.utilities.PersonneExceptions.RoleIncorrect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -62,10 +63,17 @@ public class ParticipantController {
      * @param idParticipant qui représente l'id du participant que l'on souhaite supprimer
      * @throws ParticipantInexistant si on tente de supprimer un participant qui n'existe pas
      */
+
     @DeleteMapping("/suppressionParticipant")
     public void supprimerParticipant(@PathVariable("emailUtilisateur") String email, @RequestBody Long idParticipant) throws ParticipantInexistant, RoleIncorrect, CompteInexistant {
         this.testerRole(email, Organisateur.class) ;
+
         this.participantService.supprimerParticipant(idParticipant);
+    }
+
+    @PostMapping("/{idParticipant}/inscriptionEpreuve")
+    public ResponseEntity<String> inscriptionEpreuve(@RequestBody Long idEpreuve, @PathVariable Long idParticipant) {
+        return this.participantService.inscriptionEpreuve(idEpreuve, idParticipant);
     }
 
 }
