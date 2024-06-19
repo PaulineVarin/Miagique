@@ -43,7 +43,7 @@ public class EpreuveService {
         this.resultatService = resultatService;
     }
 
-    public Collection<EpreuveDTO> getAllEpreuves() {
+    public Collection<EpreuveDTO> consulterEpreuves() {
         Collection<Epreuve> epreuveliste = new ArrayList<>() ;
         this.epreuveRepository.findAll().forEach(epreuveliste::add);
         return ObjectMapperUtils.mapAllEpreuves(epreuveliste,EpreuveDTO.class);
@@ -53,11 +53,11 @@ public class EpreuveService {
 
         if(isNull(this.epreuveRepository.findByNomIs(ep.getNom()))) {
 
-            if (this.infrastructureSportiveRepository.findById(ep.getInsfrastructureSportiveId()).isEmpty()) {
+            if (this.infrastructureSportiveRepository.findById(ep.getInfrastructureSportiveId()).isEmpty()) {
                 throw new InfrastructureSportiveInexistante() ;
             }
 
-            InfrastructureSportive i = this.infrastructureSportiveRepository.findById(ep.getInsfrastructureSportiveId()).get() ;
+            InfrastructureSportive i = this.infrastructureSportiveRepository.findById(ep.getInfrastructureSportiveId()).get() ;
             if(ep.getNbPlacesSpectateur() > i.getCapacite()) {
                 throw new CapaciteEpreuveSuperieur() ;
             }
@@ -84,10 +84,10 @@ public class EpreuveService {
         }
 
 
-        if(this.infrastructureSportiveRepository.findById(epUpdate.getInsfrastructureSportiveId()).isEmpty()) {
+        if(this.infrastructureSportiveRepository.findById(epUpdate.getInfrastructureSportiveId()).isEmpty()) {
             throw new InfrastructureSportiveInexistante() ;
         }
-        InfrastructureSportive i = this.infrastructureSportiveRepository.findById(epUpdate.getInsfrastructureSportiveId()).get();
+        InfrastructureSportive i = this.infrastructureSportiveRepository.findById(epUpdate.getInfrastructureSportiveId()).get();
         if(epUpdate.getNbPlacesSpectateur() > i.getCapacite()) {
             throw new CapaciteEpreuveSuperieur() ;
         }

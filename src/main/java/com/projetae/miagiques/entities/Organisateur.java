@@ -12,9 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Organisateur extends Personne {
     public Organisateur(String email, String nom, String prenom) {
-        super();
-        this.setEmail(email);
-        this.setNom(nom);
-        this.setPrenom(prenom);
+        super(nom, prenom, email);
     }
 }

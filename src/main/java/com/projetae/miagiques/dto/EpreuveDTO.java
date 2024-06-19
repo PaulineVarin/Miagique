@@ -24,6 +24,6 @@ public class EpreuveDTO {
 
     private int nbParticipants ;
 
-    private Long insfrastructureSportiveId ;
+    private Long infrastructureSportiveId ;
 
 }
