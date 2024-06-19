@@ -16,7 +16,7 @@ import java.text.ParseException;
 public class TraitementExceptionsEpreuve {
     @ExceptionHandler(EpreuveExiste.class)
     public ResponseEntity<String> gererEpreuveExiste (HttpServletRequest requete, EpreuveExiste ex) {
-        return new ResponseEntity<>("Cette épreuve existe déjà", HttpStatus.CONFLICT) ;
+        return new ResponseEntity<>("Cette épreuve existe déjà (le nom est déjà pris)", HttpStatus.CONFLICT) ;
     }
 
     @ExceptionHandler(CapaciteEpreuveSuperieur.class)
