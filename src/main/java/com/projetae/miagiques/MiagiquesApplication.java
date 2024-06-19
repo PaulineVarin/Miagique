@@ -81,16 +81,16 @@ public class MiagiquesApplication implements CommandLineRunner {
 
 		/*--- Creation Spectateur */
 		SpectateurService spectateurService = new SpectateurService(billetRepository,spectateurRepository) ;
-		SpectateurDTO spectateurDTO1 = new SpectateurDTO(1l, "MARS","TOTO","toto@mail.com",null) ;
-		SpectateurDTO spectateurDTO2 = new SpectateurDTO(1l, "AVRIL","TATA","tata@mail.com",null) ;
+		SpectateurDTO spectateurDTO1 = new SpectateurDTO(2l, "MARS","TOTO","toto@mail.com",null) ;
+		SpectateurDTO spectateurDTO2 = new SpectateurDTO(3l, "AVRIL","TATA","tata@mail.com",null) ;
 
 		spectateurService.creerSpectateur(spectateurDTO1) ;
 		spectateurService.creerSpectateur(spectateurDTO2) ;
 
 		/*--- Creation Controleur */
 		ControleurService controleurService = new ControleurService(controleurRepository);
-		ControleurDTO controleurDTO1 = new ControleurDTO(1l, "NAYET","MORGAN","morgan@mail.com") ;
-		ControleurDTO controleurDTO2 = new ControleurDTO(1l, "VARIN","PAULINE","pauline@mail.com") ;
+		ControleurDTO controleurDTO1 = new ControleurDTO(4l, "NAYET","MORGAN","morgan@mail.com") ;
+		ControleurDTO controleurDTO2 = new ControleurDTO(5l, "VARIN","PAULINE","pauline@mail.com") ;
 
 		controleurService.creerControleur(controleurDTO1) ;
 		controleurService.creerControleur(controleurDTO2) ;
