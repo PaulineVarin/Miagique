@@ -17,8 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import static java.util.Objects.isNull;
 
@@ -108,5 +112,18 @@ public class EpreuveService {
         return new ResponseEntity<>("Suppression ok", HttpStatus.OK) ;
 
 
+    }
+
+    public Collection<EpreuveDTO> getAllEpreuvesDisponibles() {
+        Collection<Epreuve> epreuvesDisponibles = new ArrayList<>() ;
+        this.epreuveRepository.findAll().forEach(epreuvesDisponibles::add);
+        Timestamp todayDate = new Timestamp(new Date().getTime());
+        for (Epreuve ep : epreuvesDisponibles) {
+            if(ep.getParticipants().size() < ep.getNbParticipants() && ChronoUnit.DAYS.between(todayDate.toLocalDateTime(), ep.getDate().toLocalDateTime()) > 10) {
+                epreuvesDisponibles.add(ep);
+            }
+        }
+
+        return ObjectMapperUtils.mapAllEpreuves(epreuvesDisponibles,EpreuveDTO.class);
     }
 }
