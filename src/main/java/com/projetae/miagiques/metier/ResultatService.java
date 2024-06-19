@@ -71,7 +71,7 @@ public class ResultatService {
         this.epreuveRepository.save(ep);
 
         resDTO = new ResultatDTO(res.getIdResultat(), resultatInfos.getTemps(), resultatInfos.getPoints(), resultatInfos.getPosition(), res.isForfait(),
-                                 part.getId(), part.getNom(), ep.getIdEpreuve(), ep.getNom());
+                ep.getIdEpreuve(),ep.getNom(), part.getId(),part.getNom());
 
         return ResponseEntity.ok(resDTO);
     }
