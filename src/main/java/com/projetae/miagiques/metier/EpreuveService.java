@@ -132,19 +132,20 @@ public class EpreuveService {
 
     public Collection<EpreuveDTO> getAllEpreuvesDisponibles() {
 
+        Collection<Epreuve> epreuves;
         Collection<Epreuve> epreuvesDisponibles;
         Timestamp todayDate;
 
-        epreuvesDisponibles = new ArrayList<>() ;
-        this.epreuveRepository.findAll().forEach(epreuvesDisponibles::add);
-
+        epreuves = new ArrayList<>() ;
+        this.epreuveRepository.findAll().forEach(epreuves::add);
+        
         todayDate = new Timestamp(new Date().getTime());
-        for (Epreuve ep : epreuvesDisponibles) {
+        epreuvesDisponibles = new ArrayList<>();
+        for (Epreuve ep : epreuves) {
             if(ep.getParticipants().size() < ep.getNbParticipants() && ChronoUnit.DAYS.between(todayDate.toLocalDateTime(), ep.getDate().toLocalDateTime()) > 10) {
                 epreuvesDisponibles.add(ep);
             }
         }
-
         return ObjectMapperUtils.mapAllEpreuves(epreuvesDisponibles,EpreuveDTO.class);
     }
 }
