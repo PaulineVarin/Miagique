@@ -58,12 +58,13 @@ public class ParticipantService {
         return participantDTO;
     }
 
-    public void supprimerParticipant(Long idParticipant) throws ParticipantInexistant {
+    public ResponseEntity<String> supprimerParticipant(Long idParticipant) throws ParticipantInexistant {
         if(!this.participantRepository.findById(idParticipant).isPresent()) {
             throw new ParticipantInexistant();
         }
         Participant participant = this.participantRepository.findById(idParticipant).get();
         this.participantRepository.delete(participant);
+        return new ResponseEntity<>("Suppression OK", HttpStatus.OK);
     }
 
     public ResponseEntity<String> inscriptionEpreuve(Long idEpreuve, Long idParticipant) {

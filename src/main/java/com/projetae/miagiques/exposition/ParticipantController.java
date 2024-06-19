@@ -69,9 +69,9 @@ public class ParticipantController {
      * @throws CompteInexistant si le mail n'a pas de compte associé
      */
     @DeleteMapping("/{emailUtilisateur}/suppressionParticipant")
-    public void supprimerParticipant(@PathVariable("emailUtilisateur") String email, @RequestBody Long idParticipant) throws ParticipantInexistant, RoleIncorrect, CompteInexistant {
+    public ResponseEntity<String> supprimerParticipant(@PathVariable("emailUtilisateur") String email, @RequestBody Long idParticipant) throws ParticipantInexistant, RoleIncorrect, CompteInexistant {
         this.testerRole(email, Organisateur.class) ;
-        this.participantService.supprimerParticipant(idParticipant);
+        return this.participantService.supprimerParticipant(idParticipant);
     }
 
     /**
