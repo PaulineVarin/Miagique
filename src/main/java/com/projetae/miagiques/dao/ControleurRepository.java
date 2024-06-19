@@ -4,4 +4,5 @@ import com.projetae.miagiques.entities.Controleur;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ControleurRepository extends CrudRepository<Controleur, Long> {
+    Controleur findByEmailIs(String email) ;
 }

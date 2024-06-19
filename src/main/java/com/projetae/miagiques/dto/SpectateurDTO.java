@@ -13,7 +13,6 @@ import java.util.Collection;
 @Setter
 @Getter
 public class SpectateurDTO {
-    private Long id;
     private String nom;
     private String prenom;
     private String email;

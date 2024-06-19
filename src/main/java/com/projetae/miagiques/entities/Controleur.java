@@ -10,4 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Controleur extends Personne {
+    public Controleur(String email, String nom, String prenom) {
+        super(nom, prenom, email) ;
+    }
 }
