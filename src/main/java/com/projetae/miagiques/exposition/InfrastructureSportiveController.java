@@ -1,17 +1,23 @@
 package com.projetae.miagiques.exposition;
 
+
+import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.dto.InfrastructureSportiveDTO;
 import com.projetae.miagiques.entities.Organisateur;
 import com.projetae.miagiques.entities.Personne;
 import com.projetae.miagiques.metier.InfrastructureSportiveService;
 import com.projetae.miagiques.metier.PersonneService;
 import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveExiste;
+import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveInexistante;
+import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveReference;
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import com.projetae.miagiques.utilities.PersonneExceptions.RoleIncorrect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/infrastructure/{emailUtilisateur}")
@@ -39,9 +45,27 @@ public class InfrastructureSportiveController {
         return true ;
     }
 
+    @GetMapping({"/listerInfrastructures"})
+    public Collection<InfrastructureSportiveDTO> getAllInfrastructure(@PathVariable("emailUtilisateur") String email) throws RoleIncorrect, CompteInexistant {
+        this.testerRole(email) ;
+        return this.infrastructureSportiveService.getAllInfrastructures() ;
+    }
+
     @PostMapping("/creationInfrastructure")
     public InfrastructureSportiveDTO creationInfrastructure(@PathVariable("emailUtilisateur") String email, @RequestBody InfrastructureSportiveDTO infrastructureInfos) throws RoleIncorrect, CompteInexistant, InfrastructureSportiveExiste {
         this.testerRole(email) ;
         return this.infrastructureSportiveService.creationInfrastructure(infrastructureInfos) ;
+    }
+
+    @PutMapping("/{idInfrastructure}/miseAjour")
+    public InfrastructureSportiveDTO miseAJourEpreuve(@PathVariable("emailUtilisateur") String email, @RequestBody InfrastructureSportiveDTO infrastructureInfos, @PathVariable("idInfrastructure") Long idI) throws RoleIncorrect, CompteInexistant, InfrastructureSportiveInexistante, InfrastructureSportiveExiste {
+        this.testerRole(email) ;
+        return this.infrastructureSportiveService.miseAJourInfrastructure(infrastructureInfos, idI) ;
+    }
+
+    @DeleteMapping("/{idInfrastructure}/suppression")
+    public ResponseEntity<String> supprimerInfrastructure(@PathVariable("emailUtilisateur") String email, @PathVariable("idInfrastructure") Long idInfrastructure) throws RoleIncorrect, CompteInexistant, InfrastructureSportiveInexistante, InfrastructureSportiveReference {
+        this.testerRole(email) ;
+        return this.infrastructureSportiveService.supprimerInfrastructure(idInfrastructure) ;
     }
 }

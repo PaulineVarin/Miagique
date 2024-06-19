@@ -1,6 +1,7 @@
 package com.projetae.miagiques.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.projetae.miagiques.dto.InfrastructureSportiveDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,5 +34,11 @@ public class InfrastructureSportive {
         this.nom = nom;
         this.capacite = capacite ;
         this.adresse = adresse ;
+    }
+
+    public void updateInfrastructure(InfrastructureSportiveDTO infrastructureUpdate) {
+        this.nom = infrastructureUpdate.getNom();
+        this.capacite = infrastructureUpdate.getCapacite() ;
+        this.adresse = infrastructureUpdate.getAdresse() ;
     }
 }

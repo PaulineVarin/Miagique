@@ -134,7 +134,4 @@ public class OrganisateurController {
         this.testerRole(email) ;
         return this.epreuveService.supprimerEpreuve(idEpreuve) ;
     }
-
-
-
 }

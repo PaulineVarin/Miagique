@@ -75,7 +75,7 @@ public class EpreuveService {
 
         Epreuve e = this.epreuveRepository.findById(idEpreuve).get() ;
 
-        if(!this.epreuveRepository.findByNomIsAndAndIdEpreuveIsNot(epUpdate.getNom(), idEpreuve).isEmpty()) {
+        if(!this.epreuveRepository.findByNomIsAndIdEpreuveIsNot(epUpdate.getNom(), idEpreuve).isEmpty()) {
             throw new EpreuveExiste() ;
         }
 

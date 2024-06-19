@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,4 +19,6 @@ public class InfrastructureSportiveDTO {
     private int capacite ;
 
     private String adresse ;
+
+    private Collection<Long> listeIdEpreuves;
 }
