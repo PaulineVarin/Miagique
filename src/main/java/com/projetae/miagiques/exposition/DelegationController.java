@@ -11,6 +11,7 @@ import com.projetae.miagiques.utilities.DelegationExceptions.DelegationInexistan
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import com.projetae.miagiques.utilities.PersonneExceptions.RoleIncorrect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -49,9 +50,9 @@ public class DelegationController {
     }
 
     @DeleteMapping("/supprimerDelegation")
-    public void supprimerDelegation(@PathVariable("emailUtilisateur") String email, @RequestBody Long idD) throws DelegationInexistante, RoleIncorrect, CompteInexistant {
+    public ResponseEntity<String> supprimerDelegation(@PathVariable("emailUtilisateur") String email, @RequestBody Long idD) throws DelegationInexistante, RoleIncorrect, CompteInexistant {
         this.testerRole(email, Organisateur.class) ;
-        delegationService.supprimerDelegation(idD);
+        return this.delegationService.supprimerDelegation(idD);
     }
 
 }
