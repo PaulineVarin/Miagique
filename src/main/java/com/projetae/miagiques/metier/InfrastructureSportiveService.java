@@ -1,16 +1,9 @@
 package com.projetae.miagiques.metier;
 
 import com.projetae.miagiques.dao.InfrastructureSportiveRepository;
-import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.dto.InfrastructureSportiveDTO;
 import com.projetae.miagiques.dto.ObjectMapperUtils;
-import com.projetae.miagiques.entities.Billet;
-import com.projetae.miagiques.entities.Epreuve;
 import com.projetae.miagiques.entities.InfrastructureSportive;
-import com.projetae.miagiques.entities.Resultat;
-import com.projetae.miagiques.utilities.EpreuveExceptions.CapaciteEpreuveSuperieur;
-import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveExiste;
-import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
 import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveExiste;
 import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveInexistante;
 import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveReference;
@@ -18,10 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Collection;
-
 import static java.util.Objects.isNull;
 
 @Service
