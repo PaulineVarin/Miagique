@@ -103,7 +103,7 @@ public class MiagiquesApplication implements CommandLineRunner {
 		delegationService.creerDelegation("Paris") ;
 
 		/*--- Creation Participants */
-		ParticipantService participantService = new ParticipantService(participantRepository,delegationRepository, epreuveRepository) ;
+		ParticipantService participantService = new ParticipantService(participantRepository,delegationRepository, epreuveRepository,resultatRepository) ;
 		Map<String,Object> infosPa1 = Map.ofEntries(
 				entry("nom", "ABRAHAMS"),
 				entry("prenom", "HAROLD"),
