@@ -2,6 +2,9 @@ package com.projetae.miagiques.metier;
 
 import com.projetae.miagiques.dao.BilletRepository;
 import com.projetae.miagiques.dao.SpectateurRepository;
+import com.projetae.miagiques.dto.BilletDTO;
+import com.projetae.miagiques.dto.EpreuveDTO;
+import com.projetae.miagiques.dto.ObjectMapperUtils;
 import com.projetae.miagiques.dto.SpectateurDTO;
 import com.projetae.miagiques.entities.Billet;
 import com.projetae.miagiques.entities.Epreuve;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static java.util.Objects.isNull;
@@ -35,8 +39,11 @@ public class SpectateurService {
         this.spectateurRepository = spectateurRepository;
     }
 
-    public Collection<Billet> getAllBillets(Long idSpectateur) {
-        return this.billetRepository.findAllBySpectateurId(idSpectateur) ;
+    public Collection<BilletDTO> getAllBillets(Long idSpectateur) {
+        Collection<Billet> billetliste = new ArrayList<>() ;
+        this.billetRepository.findAllBySpectateurId(idSpectateur).forEach(billetliste::add);
+        return ObjectMapperUtils.mapAllBillets(billetliste, BilletDTO.class);
+
     }
 
     public String annulerBillet(Long idBillet, Long idSpectateur) throws BilletInexistant, BilletAnnulationImpossible {

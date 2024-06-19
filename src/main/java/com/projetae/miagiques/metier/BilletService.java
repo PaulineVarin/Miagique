@@ -2,16 +2,21 @@ package com.projetae.miagiques.metier;
 
 import com.projetae.miagiques.dao.BilletRepository;
 import com.projetae.miagiques.dao.EpreuveRepository;
+import com.projetae.miagiques.dao.SpectateurRepository;
+import com.projetae.miagiques.dto.BilletDTO;
+import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.dto.SelectionBilletDTO;
 import com.projetae.miagiques.entities.Billet;
 import com.projetae.miagiques.entities.Epreuve;
-import com.projetae.miagiques.entities.Personne;
 import com.projetae.miagiques.entities.Spectateur;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletAchatImpossible;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
 import com.projetae.miagiques.utilities.BilletExceptions.TooManyBilletsException;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
+import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import com.projetae.miagiques.utilities.StatutBillet;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.autoconfigure.rsocket.RSocketProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,15 +24,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Collection;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class BilletService {
 
     private final BilletRepository billetRepository;
     private final EpreuveRepository epreuveRepository;
 
-    public BilletService(BilletRepository billetRepository, EpreuveRepository epreuveRepository) {
+    private final SpectateurRepository spectateurRepository ;
+
+    public BilletService(BilletRepository billetRepository, EpreuveRepository epreuveRepository, SpectateurRepository spectateurRepository) {
         this.billetRepository = billetRepository;
         this.epreuveRepository = epreuveRepository;
+        this.spectateurRepository = spectateurRepository;
     }
 
     public void supprimerBillets(Collection<Billet> listeBillets) {
@@ -42,7 +52,7 @@ public class BilletService {
         Long idEpreuveBillet;
 
         etat = this.getEtatBillet(idBillet);
-        isBilletValide = StatutBillet.VALIDE == etat;
+        isBilletValide = StatutBillet.GENERE == etat;
 
         if (!isBilletValide) {
             return ResponseEntity.ok(isBilletValide);
@@ -55,6 +65,12 @@ public class BilletService {
         }
 
         isBilletValide = idEpreuve.equals(idEpreuveBillet);
+
+        if(isBilletValide) {
+            Billet b = this.billetRepository.findByIdBillet(idBillet) ;
+            b.setEtat(StatutBillet.VALIDE);
+            this.billetRepository.save(b);
+        }
 
         return ResponseEntity.ok(isBilletValide);
     }
@@ -103,18 +119,25 @@ public class BilletService {
         return compte;
     }
 
-    public ResponseEntity<SelectionBilletDTO> selectionnerUnBillet(Spectateur spectateur, Long idEpreuve) throws EpreuveInexistante, TooManyBilletsException {
+    public SelectionBilletDTO selectionnerUnBillet(String mail, Long idEpreuve) throws EpreuveInexistante, TooManyBilletsException, CompteInexistant {
 
         Billet bi;
         Epreuve ep;
 
-        if (spectateur == null || idEpreuve == null)
+        if (mail == null || idEpreuve == null)
             throw new IllegalArgumentException("At least, one parameter may be null");
 
         ep = this.epreuveRepository.findById(idEpreuve).get();
 
         if (ep == null)
             throw new EpreuveInexistante(HttpStatus.NOT_FOUND);
+
+        if(isNull(this.spectateurRepository.findByEmailIs(mail))) {
+            throw new CompteInexistant() ;
+        };
+
+        Spectateur spectateur = this.spectateurRepository.findByEmailIs(mail) ;
+
 
         if (4 <= this.compteBilletPourEpreuve(spectateur, ep)) {
             throw new TooManyBilletsException(HttpStatus.CONFLICT);
@@ -135,12 +158,15 @@ public class BilletService {
 
         this.billetRepository.save(bi); //on save l'état du billet dans la base
         this.epreuveRepository.save(ep); //on save l'état de l'épreuve
-        return ResponseEntity.ok(new SelectionBilletDTO(bi.getPrix(), bi));
+        return new SelectionBilletDTO(bi.getPrix(), bi.getIdBillet());
     }
-    public ResponseEntity<Billet> achatBillet(@RequestBody Long idBillet, float prixAchat)
+    public BilletDTO achatBillet(@RequestBody Long idBillet, float prixAchat, String email)
             throws BilletInexistant, BilletAchatImpossible {
 
         Billet bi;
+        ModelMapper modelMapper;
+        modelMapper = new ModelMapper();
+        BilletDTO biDTO = new BilletDTO() ;
 
         if (idBillet == null || prixAchat < 0)
             throw new IllegalArgumentException("billet may be null or prixAchat may be below 0");
@@ -154,15 +180,30 @@ public class BilletService {
         if (prixAchat < bi.getPrix()) {
             bi.setEtat(StatutBillet.ANNULE);
             this.billetRepository.save(bi);
-            return ResponseEntity.ok(null); //on accepte que le client n'ait pas payé
+            modelMapper.map(bi, biDTO);
+            biDTO.setEpreuveId(bi.getEpreuve().getIdEpreuve());
+            biDTO.setSpectateurId(bi.getSpectateur().getId());
+            return biDTO; //on accepte que le client n'ait pas payé
         }
 
         bi.setEtat(StatutBillet.GENERE);
+
+        Spectateur s = this.spectateurRepository.findByEmailIs(email);
+        s.getBillets().add(bi) ;
+        bi.setSpectateur(s);
+
         this.billetRepository.save(bi);
-        return ResponseEntity.ok(bi);
+        modelMapper.map(bi, biDTO);
+        biDTO.setEpreuveId(bi.getEpreuve().getIdEpreuve());
+        biDTO.setSpectateurId(bi.getSpectateur().getId());
+        return biDTO ;
     }
 
     public Billet getBilletAnnule(Epreuve epreuve) {
-        return this.billetRepository.findByEpreuveAndEtatIs(epreuve, StatutBillet.ANNULE).stream().findAny().get();
+        if(this.billetRepository.findByEpreuveAndEtatIs(epreuve, StatutBillet.ANNULE).isEmpty()) {
+            return null ;
+        } else  {
+            return this.billetRepository.findByEpreuveAndEtatIs(epreuve, StatutBillet.ANNULE).stream().findAny().get();
+        }
     }
 }

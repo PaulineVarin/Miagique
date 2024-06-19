@@ -1,10 +1,12 @@
 package com.projetae.miagiques.dto;
 
+import com.projetae.miagiques.entities.Billet;
 import com.projetae.miagiques.entities.Epreuve;
 import com.projetae.miagiques.entities.InfrastructureSportive;
 import com.projetae.miagiques.entities.StatistiqueEpreuve;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +55,31 @@ public class ObjectMapperUtils {
                 .map(entity -> modelMapper.map(entity, classeDTO))
                 .collect(Collectors.toList());
     }
+
+
+    /**
+     * <p>Note: classeDTO doit posséder un constructeur sans arguments</p>
+     *
+     * @param listeBillets liste qui contient les infrastructures
+     * @param classeDTO classe de mappage
+     * @return liste qui contient les infrastructures sous le format InfrastructureSportiveDTO
+     */
+    public static Collection<BilletDTO> mapAllBillets(final Collection<Billet> listeBillets, Class<BilletDTO> classeDTO) {
+        Collection<BilletDTO> listeBilletsDTO = new ArrayList<>() ;
+        ModelMapper modelMapper;
+        modelMapper = new ModelMapper();
+        for(Billet b:listeBillets) {
+            BilletDTO bi = new BilletDTO();
+            modelMapper.map(b,bi);
+            bi.setSpectateurId(b.getSpectateur().getId());
+            bi.setEpreuveId(b.getEpreuve().getIdEpreuve());
+            listeBilletsDTO.add(bi) ;
+        }
+
+        return listeBilletsDTO ;
+
+    }
+
 
 
 

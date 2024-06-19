@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -45,7 +44,7 @@ public class MiagiquesApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		BilletService billetService = new BilletService(billetRepository, epreuveRepository) ;
+		BilletService billetService = new BilletService(billetRepository, epreuveRepository, spectateurRepository) ;
 		ResultatService resultatService = new ResultatService(resultatRepository) ;
 		/*--- Creation Infrastructure */
 		InfrastructureSportiveService infrastructureSportiveService = new InfrastructureSportiveService(infrastructureSportiveRepository) ;
