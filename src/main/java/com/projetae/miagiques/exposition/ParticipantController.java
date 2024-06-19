@@ -6,6 +6,7 @@ import com.projetae.miagiques.utilities.DelegationExceptions.DelegationInexistan
 import com.projetae.miagiques.utilities.ParticipantExceptions.ParticipantExistant;
 import com.projetae.miagiques.utilities.ParticipantExceptions.ParticipantInexistant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -34,9 +35,14 @@ public class ParticipantController {
      * @param idParticipant qui représente l'id du participant que l'on souhaite supprimer
      * @throws ParticipantInexistant si on tente de supprimer un participant qui n'existe pas
      */
-    @DeleteMapping("/suppressionParticipant")
-    public void supprimerParticipant(@RequestBody Long idParticipant) throws ParticipantInexistant {
+    @DeleteMapping("/suppressionParticipant/{idParticipant}")
+    public void supprimerParticipant(@PathVariable Long idParticipant) throws ParticipantInexistant {
         this.participantService.supprimerParticipant(idParticipant);
+    }
+
+    @PostMapping("/{idParticipant}/inscriptionEpreuve")
+    public ResponseEntity<String> inscriptionEpreuve(@RequestBody Long idEpreuve, @PathVariable Long idParticipant) {
+        return this.participantService.inscriptionEpreuve(idEpreuve, idParticipant);
     }
 
 }

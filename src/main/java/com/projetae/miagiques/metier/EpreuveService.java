@@ -53,11 +53,11 @@ public class EpreuveService {
 
         if(isNull(this.epreuveRepository.findByNomIs(ep.getNom()))) {
 
-            if (this.infrastructureSportiveRepository.findById(ep.getInsfrastructureSportiveId()).isEmpty()) {
+            if (this.infrastructureSportiveRepository.findById(ep.getInfrastructureSportiveId()).isEmpty()) {
                 throw new InfrastructureSportiveInexistante() ;
             }
 
-            InfrastructureSportive i = this.infrastructureSportiveRepository.findById(ep.getInsfrastructureSportiveId()).get() ;
+            InfrastructureSportive i = this.infrastructureSportiveRepository.findById(ep.getInfrastructureSportiveId()).get() ;
             if(ep.getNbPlacesSpectateur() > i.getCapacite()) {
                 throw new CapaciteEpreuveSuperieur() ;
             }
@@ -84,10 +84,10 @@ public class EpreuveService {
         }
 
 
-        if(this.infrastructureSportiveRepository.findById(epUpdate.getInsfrastructureSportiveId()).isEmpty()) {
+        if(this.infrastructureSportiveRepository.findById(epUpdate.getInfrastructureSportiveId()).isEmpty()) {
             throw new InfrastructureSportiveInexistante() ;
         }
-        InfrastructureSportive i = this.infrastructureSportiveRepository.findById(epUpdate.getInsfrastructureSportiveId()).get();
+        InfrastructureSportive i = this.infrastructureSportiveRepository.findById(epUpdate.getInfrastructureSportiveId()).get();
         if(epUpdate.getNbPlacesSpectateur() > i.getCapacite()) {
             throw new CapaciteEpreuveSuperieur() ;
         }
@@ -115,15 +115,15 @@ public class EpreuveService {
     }
 
     public Collection<EpreuveDTO> getAllEpreuvesDisponibles() {
-        Collection<Epreuve> epreuvesDisponibles = new ArrayList<>() ;
-        this.epreuveRepository.findAll().forEach(epreuvesDisponibles::add);
+        Collection<Epreuve> epreuves = new ArrayList<>() ;
+        this.epreuveRepository.findAll().forEach(epreuves::add);
         Timestamp todayDate = new Timestamp(new Date().getTime());
-        for (Epreuve ep : epreuvesDisponibles) {
+        Collection<Epreuve> epreuvesDisponibles = new ArrayList<>();
+        for (Epreuve ep : epreuves) {
             if(ep.getParticipants().size() < ep.getNbParticipants() && ChronoUnit.DAYS.between(todayDate.toLocalDateTime(), ep.getDate().toLocalDateTime()) > 10) {
                 epreuvesDisponibles.add(ep);
             }
         }
-
         return ObjectMapperUtils.mapAllEpreuves(epreuvesDisponibles,EpreuveDTO.class);
     }
 }
