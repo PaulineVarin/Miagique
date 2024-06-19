@@ -47,13 +47,14 @@ public class ParticipantController {
 
     /**
      *
+     * @param email représente le mail de la personne qui essaye de faire une action
      * @param participantInfos JSON qui contient les informations d'un participant.
      *                         Il doit posséder les attributs suivants : nom, prenom, email, idDelegation
      * @throws DelegationInexistante Si on tente de créer un participant avec une délégation qui n'existe pas
      * @throws ParticipantExistant Si on essaie de créer un participant avec un email déjà utilisé
      * @return le participant ajouté
      */
-    @PostMapping("/creationParticipant")
+    @PostMapping("/{emailUtilisateur}/creationParticipant")
     public ParticipantDTO creerParticipant(@PathVariable("emailUtilisateur") String email, @RequestBody Map<String, Object> participantInfos) throws DelegationInexistante, ParticipantExistant, RoleIncorrect, CompteInexistant {
         this.testerRole(email, Organisateur.class) ;
         return this.participantService.creerParticipant(participantInfos);
@@ -61,20 +62,37 @@ public class ParticipantController {
 
     /**
      *
-     * @param idParticipant qui représente l'id du participant que l'on souhaite supprimer
+     * @param email représente le mail de la personne qui essaye de faire une action
+     * @param idParticipant Id du participant qui doit être supprimé
      * @throws ParticipantInexistant si on tente de supprimer un participant qui n'existe pas
+     * @throws RoleIncorrect si l'utilisateur n'a pas le bon rôle pour supprimer le participant
+     * @throws CompteInexistant si le mail n'a pas de compte associé
      */
-
     @DeleteMapping("/{emailUtilisateur}/suppressionParticipant")
     public void supprimerParticipant(@PathVariable("emailUtilisateur") String email, @RequestBody Long idParticipant) throws ParticipantInexistant, RoleIncorrect, CompteInexistant {
         this.testerRole(email, Organisateur.class) ;
         this.participantService.supprimerParticipant(idParticipant);
     }
 
+    /**
+     *
+     * @param email représente le mail de la personne qui essaye de faire une action
+     * @param idEpreuve Id de l'épreuve dans lequel le participant veut s'inscrire
+     * @param idParticipant Id du participant qui veut s'inscrire à une épreuve
+     * @return Une confirmation de l'inscription sous forme de texte
+     * @throws RoleIncorrect si l'utilisateur n'a pas le bon rôle pour s'inscrire à une épreuve
+     * @throws CompteInexistant si le mail n'a pas de compte associé
+     */
     @PostMapping("/{emailUtilisateur}/{idParticipant}/inscriptionEpreuve")
     public ResponseEntity<String> inscriptionEpreuve(@PathVariable("emailUtilisateur") String email, @RequestBody Long idEpreuve, @PathVariable Long idParticipant) throws RoleIncorrect, CompteInexistant {
         this.testerRole(email, Participant.class) ;
         return this.participantService.inscriptionEpreuve(idEpreuve, idParticipant);
+    }
+
+    @PostMapping("/{emailUtilisateur}/{idParticipant}/desengagementEpreuve")
+    public ResponseEntity<String> desengagementEpreuve(@PathVariable("emailUtilisateur") String email, @RequestBody Long idEpreuve, @PathVariable Long idParticipant) throws RoleIncorrect, CompteInexistant {
+        this.testerRole(email, Participant.class);
+        return this.participantService.desengagementEpreuve(idEpreuve, idParticipant);
     }
 
 }

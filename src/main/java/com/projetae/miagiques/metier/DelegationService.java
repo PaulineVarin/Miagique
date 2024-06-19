@@ -4,6 +4,8 @@ import com.projetae.miagiques.dao.DelegationRepository;
 import com.projetae.miagiques.entities.Delegation;
 import com.projetae.miagiques.utilities.DelegationExceptions.DelegationExistante;
 import com.projetae.miagiques.utilities.DelegationExceptions.DelegationInexistante;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,12 +27,13 @@ public class DelegationService {
         return delegation;
     }
 
-    public void supprimerDelegation(Long idD) throws DelegationInexistante {
+    public ResponseEntity<String> supprimerDelegation(Long idD) throws DelegationInexistante {
         if(this.delegationRepository.findById(idD).isEmpty()) {
             throw new DelegationInexistante();
         }
         Delegation delegation = this.delegationRepository.findById(idD).get();
         this.delegationRepository.deleteById(idD);
+        return new ResponseEntity<>("Suppression OK", HttpStatus.OK);
     }
 
 }

@@ -32,5 +32,12 @@ public class Resultat {
     @ManyToOne
     private Participant participant;
 
+    public Resultat(boolean isForfait) {
+        this.temps = 0;
+        this.points = 0;
+        this.position = 0;
+        this.isForfait = isForfait;
+    }
+
 
 }
