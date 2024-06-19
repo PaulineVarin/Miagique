@@ -110,8 +110,6 @@ public class EpreuveService {
 
         this.epreuveRepository.deleteById(idEpreuve);
         return new ResponseEntity<>("Suppression ok", HttpStatus.OK) ;
-
-
     }
 
     public Collection<EpreuveDTO> getAllEpreuvesDisponibles() {
