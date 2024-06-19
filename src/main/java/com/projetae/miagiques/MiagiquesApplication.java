@@ -45,7 +45,7 @@ public class MiagiquesApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		BilletService billetService = new BilletService(billetRepository) ;
+		BilletService billetService = new BilletService(billetRepository, epreuveRepository) ;
 		ResultatService resultatService = new ResultatService(resultatRepository) ;
 		/*--- Creation Infrastructure */
 		InfrastructureSportiveService infrastructureSportiveService = new InfrastructureSportiveService(infrastructureSportiveRepository) ;

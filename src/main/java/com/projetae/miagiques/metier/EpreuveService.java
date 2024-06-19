@@ -48,10 +48,6 @@ public class EpreuveService {
         return ObjectMapperUtils.mapAllEpreuves(epreuveliste,EpreuveDTO.class);
     }
 
-    public Optional<Epreuve> getEpreuveByIdEpreuve(Long idEpreuve) {
-        return this.epreuveRepository.findById(idEpreuve);
-    }
-
     public EpreuveDTO creationEpreuve(EpreuveDTO ep) throws EpreuveExiste, InfrastructureSportiveInexistante, CapaciteEpreuveSuperieur {
 
         InfrastructureSportive i;
