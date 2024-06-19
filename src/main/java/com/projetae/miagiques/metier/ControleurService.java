@@ -2,9 +2,7 @@ package com.projetae.miagiques.metier;
 
 import com.projetae.miagiques.dao.ControleurRepository;
 import com.projetae.miagiques.dto.ControleurDTO;
-import com.projetae.miagiques.dto.SpectateurDTO;
 import com.projetae.miagiques.entities.Controleur;
-import com.projetae.miagiques.entities.Spectateur;
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteExiste;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
