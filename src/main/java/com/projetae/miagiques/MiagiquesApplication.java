@@ -69,8 +69,8 @@ public class MiagiquesApplication implements CommandLineRunner {
 		LocalDate d2 = LocalDate.parse("2024-06-21", formatter);
 		Timestamp ts2 =Timestamp.valueOf(d2.atStartOfDay()) ;
 
-		EpreuveDTO epreuveDTO1 = new EpreuveDTO("Tennis",ts1,10,2, 3L) ;
-		EpreuveDTO epreuveDTO2 = new EpreuveDTO("Piscine",ts2,5,2, 4L) ;
+		EpreuveDTO epreuveDTO1 = new EpreuveDTO(null,"Tennis",ts1,10,2, 3L) ;
+		EpreuveDTO epreuveDTO2 = new EpreuveDTO(null,"Piscine",ts2,5,2, 4L) ;
 
 		epreuveService.creationEpreuve(epreuveDTO1) ;
 		epreuveService.creationEpreuve(epreuveDTO2) ;
