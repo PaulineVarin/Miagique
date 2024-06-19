@@ -3,7 +3,6 @@ package com.projetae.miagiques.exposition;
 import com.projetae.miagiques.dto.SelectionBilletDTO;
 import com.projetae.miagiques.entities.*;
 import com.projetae.miagiques.metier.BilletService;
-import com.projetae.miagiques.metier.EpreuveService;
 import com.projetae.miagiques.metier.PersonneService;
 import com.projetae.miagiques.metier.SpectateurService;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletAchatImpossible;
@@ -12,17 +11,14 @@ import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import com.projetae.miagiques.utilities.PersonneExceptions.RoleIncorrect;
-import com.projetae.miagiques.utilities.StatutBillet;
 import com.projetae.miagiques.utilities.BilletExceptions.TooManyBilletsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -34,8 +30,6 @@ public class BilletController {
     private BilletService billetService;
     @Autowired
     private PersonneService personneService;
-    @Autowired
-    private EpreuveService epreuveService;
     @Autowired
     private SpectateurService spectateurService;
 
