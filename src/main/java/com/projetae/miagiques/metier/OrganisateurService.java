@@ -7,8 +7,12 @@ import com.projetae.miagiques.dto.OrganisateurDTO;
 import com.projetae.miagiques.entities.Organisateur;
 import com.projetae.miagiques.entities.Participant;
 import com.projetae.miagiques.entities.Personne;
+import com.projetae.miagiques.utilities.ParticipantExceptions.ParticipantInexistant;
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteExiste;
+import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.isNull;
@@ -34,8 +38,15 @@ public class OrganisateurService {
         } else {
             throw new CompteExiste() ;
         }
-
-
     }
 
+    public ResponseEntity<String> supprimerOrganisateur(Long idOrganisateur) throws CompteInexistant {
+        if(this.organisateurRepository.findById(idOrganisateur).isEmpty()) {
+            throw new CompteInexistant();
+        }
+
+        Organisateur organisateur = this.organisateurRepository.findById(idOrganisateur).get();
+        this.organisateurRepository.delete(organisateur);
+        return new ResponseEntity<>("Suppression ok", HttpStatus.OK) ;
+    }
 }

@@ -43,7 +43,7 @@ public class EpreuveService {
         this.resultatService = resultatService;
     }
 
-    public Collection<EpreuveDTO> getAllEpreuves() {
+    public Collection<EpreuveDTO> consulterEpreuves() {
         Collection<Epreuve> epreuveliste = new ArrayList<>() ;
         this.epreuveRepository.findAll().forEach(epreuveliste::add);
         return ObjectMapperUtils.mapAllEpreuves(epreuveliste,EpreuveDTO.class);
