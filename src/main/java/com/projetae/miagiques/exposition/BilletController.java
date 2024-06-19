@@ -72,7 +72,7 @@ public class BilletController {
      * @param personne doit impérativement être de type Spectateur
      *                 limitée à 4 billets maximum
      * @param idEpreuve L'épreuve souhaitée par le spectateur
-     * @return 
+     * @return
      */
     @PostMapping("/selection")
     public ResponseEntity<selectionBilletDTO> selectionnerUnBillet(@RequestBody Personne personne, @RequestBody Long idEpreuve)

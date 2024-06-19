@@ -26,7 +26,6 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/organisateurs/{emailUtilisateur}")
-
 public class OrganisateurController {
 
     @Autowired
