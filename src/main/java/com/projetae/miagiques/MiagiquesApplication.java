@@ -7,14 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-
 import static java.util.Map.entry;
 
 @SpringBootApplication
@@ -45,8 +42,10 @@ public class MiagiquesApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		BilletService billetService = new BilletService(billetRepository, epreuveRepository) ;
-		ResultatService resultatService = new ResultatService(resultatRepository, epreuveRepository, participantRepository) ;
+    
+		BilletService billetService = new BilletService(billetRepository, epreuveRepository, spectateurRepository);
+		ResultatService resultatService = new ResultatService(resultatRepository, epreuveRepository, participantRepository);
+    
 		/*--- Creation Infrastructure */
 		InfrastructureSportiveService infrastructureSportiveService = new InfrastructureSportiveService(infrastructureSportiveRepository) ;
 		InfrastructureSportiveDTO infrastructureSportiveDTO1 = new InfrastructureSportiveDTO(1l, "Stade",100,"Toulouse") ;

@@ -22,5 +22,6 @@ public class Spectateur extends Personne {
 
     public Spectateur(String email, String nom, String prenom) {
         super(nom, prenom, email);
+        this.billets = new ArrayList<>() ;
     }
 }

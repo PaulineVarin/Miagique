@@ -1,5 +1,6 @@
 package com.projetae.miagiques.exposition;
 
+import com.projetae.miagiques.dto.BilletDTO;
 import com.projetae.miagiques.dto.SelectionBilletDTO;
 import com.projetae.miagiques.entities.*;
 import com.projetae.miagiques.metier.BilletService;
@@ -58,7 +59,7 @@ public class BilletController {
      * @return la liste des billets du spectateur
      */
     @GetMapping({"/{idSpectateur}/listerBillets"})
-    public Collection<Billet> getAllBillets(@PathVariable("emailUtilisateur") String email, @PathVariable("idSpectateur") Long idSpectateur) throws RoleIncorrect, CompteInexistant {
+    public Collection<BilletDTO> getAllBillets(@PathVariable("emailUtilisateur") String email, @PathVariable("idSpectateur") Long idSpectateur) throws RoleIncorrect, CompteInexistant {
         this.testerRole(email, Spectateur.class) ;
         return this.spectateurService.getAllBillets(idSpectateur) ;
     }
@@ -97,32 +98,29 @@ public class BilletController {
      * Accessible par le spectateur uniquement
      * Affiche les offres pour les billets disponibles pour l'épreuve
      *
-     * @param personne doit impérativement être de type Spectateur
-     *                 limitée à 4 billets maximum
+     *
      * @param idEpreuve L'épreuve souhaitée par le spectateur
      * @return
      */
-    @PostMapping("/selection")
-    public ResponseEntity<SelectionBilletDTO> selectionnerUnBillet(@PathVariable("emailUtilisateur") String email, @RequestBody Personne personne, @RequestBody Long idEpreuve)
+    @PostMapping("/selection/{idEpreuve}")
+    public SelectionBilletDTO selectionnerUnBillet(@PathVariable("emailUtilisateur") String email, @PathVariable("idEpreuve") Long idEpreuve)
             throws TooManyBilletsException, EpreuveInexistante, RoleIncorrect, CompteInexistant {
 
         this.testerRole(email,Spectateur.class);
-        return this.billetService.selectionnerUnBillet((Spectateur) personne, idEpreuve);
+        return this.billetService.selectionnerUnBillet(email, idEpreuve);
     }
 
     /**
      *
-     * @param idBillet
-     * @param prixAchat
+     * @param selectionBilletDTO
      * @return null si l'achat n'est pas réalisé
      *          sinon return le billet valide et lié au clien
      */
     @PostMapping("/achat")
-    public ResponseEntity<Billet> achatBillet(@PathVariable("emailUtilisateur") String email, @RequestBody Long idBillet, float prixAchat)
+    public BilletDTO achatBillet(@PathVariable("emailUtilisateur") String email, @RequestBody SelectionBilletDTO selectionBilletDTO)
             throws RoleIncorrect, CompteInexistant, BilletInexistant, BilletAchatImpossible {
-
         this.testerRole(email, Spectateur.class);
-        return this.billetService.achatBillet(idBillet, prixAchat);
+        return this.billetService.achatBillet(selectionBilletDTO.getIdBillet(), selectionBilletDTO.getPrixBillet(),email);
     }
 
 }
