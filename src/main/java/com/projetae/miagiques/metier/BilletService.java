@@ -2,10 +2,13 @@ package com.projetae.miagiques.metier;
 
 import com.projetae.miagiques.dao.BilletRepository;
 import com.projetae.miagiques.entities.Billet;
+import com.projetae.miagiques.entities.Epreuve;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
 import com.projetae.miagiques.utilities.StatutBillet;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 @Service
 public class BilletService {
@@ -14,6 +17,10 @@ public class BilletService {
 
     public BilletService(BilletRepository billetRepository) {
         this.billetRepository = billetRepository;
+    }
+
+    public Billet getBillet(Long idBillet) {
+        return this.billetRepository.findByIdBillet(idBillet);
     }
 
     public StatutBillet getEtatBillet(Long idBillet) throws BilletInexistant {
@@ -34,5 +41,13 @@ public class BilletService {
             throw new BilletInexistant(HttpStatus.NOT_FOUND);
 
         return bi.getEpreuve().getIdEpreuve();
+    }
+
+    public Billet getBilletAnnule(Epreuve epreuve) {
+        return this.billetRepository.findByEpreuveAndEtatIs(epreuve, StatutBillet.ANNULE).stream().findAny().get();
+    }
+
+    public void saveBillet(Billet bi) {
+        this.billetRepository.save(bi);
     }
 }

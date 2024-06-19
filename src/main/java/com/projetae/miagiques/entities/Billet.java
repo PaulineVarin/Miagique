@@ -29,4 +29,11 @@ public class Billet {
 
     @ManyToOne
     private Epreuve epreuve ;
+
+    public Billet(float prix, StatutBillet etat, Spectateur spectateur, Epreuve epreuve){
+        this.prix = prix;
+        this.etat = etat;
+        this.spectateur = spectateur;
+        this.epreuve = epreuve;
+    }
 }

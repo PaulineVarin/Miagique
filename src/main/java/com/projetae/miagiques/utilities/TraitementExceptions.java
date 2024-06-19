@@ -31,4 +31,9 @@ public class TraitementExceptions {
     public ResponseEntity<String> gererTooManyBilletsException(HttpServletRequest request, TooManyBilletsException ex){
         return new ResponseEntity<>("Ce spectateur possède trop de billet", ex.getStatus());
     }
+
+    @ExceptionHandler(EpreuveInexistanteException.class)
+    public ResponseEntity<String> gererEpreuveInexistanteException(HttpServletRequest request, EpreuveInexistanteException ex){
+        return new ResponseEntity<>("Cette epreuve n'est pas trouvable dans la base", ex.getStatus());
+    }
 }
