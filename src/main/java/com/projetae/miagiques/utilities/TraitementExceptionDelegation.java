@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class TraitementExceptionDelegation {
     @ExceptionHandler(DelegationExistante.class)
-    public ResponseEntity<String> gererDelegationExistante(HttpServletRequest requete, BilletInexistant ex) {
+    public ResponseEntity<String> gererDelegationExistante(HttpServletRequest requete, DelegationExistante ex) {
         return new ResponseEntity<>("La délégation est déjà existante", HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(DelegationInexistante.class)
-    public ResponseEntity<String> gererDelegationInexistante(HttpServletRequest requete, BilletInexistant ex) {
+    public ResponseEntity<String> gererDelegationInexistante(HttpServletRequest requete, DelegationInexistante ex) {
         return new ResponseEntity<>("La délégation n'existe pas", HttpStatus.NOT_FOUND);
     }
 }
