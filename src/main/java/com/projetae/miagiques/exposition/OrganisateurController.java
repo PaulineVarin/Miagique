@@ -4,7 +4,6 @@ import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.dto.OrganisateurDTO;
 import com.projetae.miagiques.dto.StatistiqueEpreuveDTO;
 import com.projetae.miagiques.entities.Organisateur;
-import com.projetae.miagiques.entities.Participant;
 import com.projetae.miagiques.entities.Personne;
 import com.projetae.miagiques.metier.EpreuveService;
 import com.projetae.miagiques.metier.OrganisateurService;
@@ -39,7 +38,8 @@ public class OrganisateurController {
     @Autowired
     private PersonneService personneService ;
 
-    @Autowired OrganisateurService organisateurService ;
+    @Autowired
+    private OrganisateurService organisateurService ;
     /**
      *
      * @param mail représente le mail de la personne qui essaye de faire une action
@@ -96,9 +96,7 @@ public class OrganisateurController {
         return this.epreuveService.creationEpreuve(epreuveInfos) ;
     }
 
-
     /**
-     *
      * @param organisateurInfos informations concernant un organisateur
      * @return l'organisateur créer
      * @throws CompteExiste si un compte avec le même mail existe déjà
@@ -106,7 +104,6 @@ public class OrganisateurController {
     @PostMapping("/creationOrganisateur")
     public OrganisateurDTO creationOrganisateur(@RequestBody OrganisateurDTO organisateurInfos) throws CompteExiste {
         return this.organisateurService.creationOrganisateur(organisateurInfos) ;
-
     }
 
     /**
@@ -121,7 +118,7 @@ public class OrganisateurController {
      * @throws ParseException
      */
     @PutMapping("/epreuve/{idEpreuve}/miseAjour")
-    public EpreuveDTO miseAJourEpreuve(@PathVariable("emailUtilisateur") String email, @RequestBody EpreuveDTO epreuveInfos, @PathVariable("idEpreuve") Long idE) throws EpreuveInexistante, InfrastructureSportiveInexistante, CapaciteEpreuveSuperieur, RoleIncorrect, CompteInexistant {
+    public EpreuveDTO miseAJourEpreuve(@PathVariable("emailUtilisateur") String email, @RequestBody EpreuveDTO epreuveInfos, @PathVariable("idEpreuve") Long idE) throws EpreuveInexistante, InfrastructureSportiveInexistante, CapaciteEpreuveSuperieur, RoleIncorrect, CompteInexistant, EpreuveExiste {
         this.testerRole(email) ;
         return this.epreuveService.miseAJourEpreuve(epreuveInfos, idE) ;
     }

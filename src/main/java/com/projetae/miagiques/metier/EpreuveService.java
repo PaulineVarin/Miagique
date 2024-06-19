@@ -68,11 +68,16 @@ public class EpreuveService {
         }
     }
 
-    public EpreuveDTO miseAJourEpreuve(EpreuveDTO epUpdate, Long idEpreuve) throws EpreuveInexistante, InfrastructureSportiveInexistante, CapaciteEpreuveSuperieur {
+    public EpreuveDTO miseAJourEpreuve(EpreuveDTO epUpdate, Long idEpreuve) throws EpreuveInexistante, InfrastructureSportiveInexistante, CapaciteEpreuveSuperieur, EpreuveExiste {
         if(this.epreuveRepository.findById(idEpreuve).isEmpty()) {
             throw new EpreuveInexistante() ;
         }
+
         Epreuve e = this.epreuveRepository.findById(idEpreuve).get() ;
+
+        if(!this.epreuveRepository.findByNomIsAndAndIdEpreuveIsNot(epUpdate.getNom(), idEpreuve).isEmpty()) {
+            throw new EpreuveExiste() ;
+        }
 
 
         if(this.infrastructureSportiveRepository.findById(epUpdate.getInsfrastructureSportiveId()).isEmpty()) {

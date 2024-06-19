@@ -29,4 +29,9 @@ public class InfrastructureSportive {
     @OneToMany(mappedBy = "insfrastructureSportive")
     private Collection<Epreuve> listeEpreuves ;
 
+    public InfrastructureSportive(String nom, int capacite, String adresse) {
+        this.nom = nom;
+        this.capacite = capacite ;
+        this.adresse = adresse ;
+    }
 }
