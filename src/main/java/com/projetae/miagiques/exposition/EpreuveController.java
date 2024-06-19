@@ -68,7 +68,6 @@ public class EpreuveController {
 
 
     /**
-     *
      * @param epreuveInfos objet EpreuveDTO qui contient les informations de base d'une épreuve -
      *                     Doit posséder au minimum les attributs suivants initialisés "nom" ; "date" ; "nbPlacesSpectateur" ; "nbParticipants" ; "idInfrastructure"
      * @param email représente le mail de la personne qui essaye de faire une action

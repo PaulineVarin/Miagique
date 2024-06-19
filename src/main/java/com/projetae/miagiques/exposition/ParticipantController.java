@@ -2,6 +2,7 @@ package com.projetae.miagiques.exposition;
 
 import com.projetae.miagiques.dto.ParticipantDTO;
 import com.projetae.miagiques.entities.Organisateur;
+import com.projetae.miagiques.entities.Participant;
 import com.projetae.miagiques.entities.Personne;
 import com.projetae.miagiques.metier.ParticipantService;
 import com.projetae.miagiques.metier.PersonneService;
@@ -64,15 +65,15 @@ public class ParticipantController {
      * @throws ParticipantInexistant si on tente de supprimer un participant qui n'existe pas
      */
 
-    @DeleteMapping("/suppressionParticipant")
+    @DeleteMapping("/{emailUtilisateur}/suppressionParticipant")
     public void supprimerParticipant(@PathVariable("emailUtilisateur") String email, @RequestBody Long idParticipant) throws ParticipantInexistant, RoleIncorrect, CompteInexistant {
         this.testerRole(email, Organisateur.class) ;
-
         this.participantService.supprimerParticipant(idParticipant);
     }
 
-    @PostMapping("/{idParticipant}/inscriptionEpreuve")
-    public ResponseEntity<String> inscriptionEpreuve(@RequestBody Long idEpreuve, @PathVariable Long idParticipant) {
+    @PostMapping("/{emailUtilisateur}/{idParticipant}/inscriptionEpreuve")
+    public ResponseEntity<String> inscriptionEpreuve(@PathVariable("emailUtilisateur") String email, @RequestBody Long idEpreuve, @PathVariable Long idParticipant) throws RoleIncorrect, CompteInexistant {
+        this.testerRole(email, Participant.class) ;
         return this.participantService.inscriptionEpreuve(idEpreuve, idParticipant);
     }
 
