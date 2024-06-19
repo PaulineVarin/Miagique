@@ -10,8 +10,6 @@ import com.projetae.miagiques.utilities.EpreuveInexistanteException;
 import com.projetae.miagiques.utilities.PersonneExceptions.RoleNotAllowException;
 import com.projetae.miagiques.utilities.StatutBillet;
 import com.projetae.miagiques.utilities.spectateurExceptions.TooManyBilletsException;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.Stream;
-
 @RestController
-@RequestMapping("/billets")
+@RequestMapping("/billets/{emailUtilisateur}")
 public class BilletController {
 
     @Autowired
@@ -65,7 +60,7 @@ public class BilletController {
             throw new BilletInexistant(HttpStatus.BAD_GATEWAY);
         }
 
-        isBilletValide = idEpreuve == idEpreuveBillet;
+        isBilletValide = idEpreuve.equals(idEpreuveBillet);
 
         return ResponseEntity.ok(isBilletValide);
     }
@@ -77,7 +72,7 @@ public class BilletController {
      * @param personne doit impérativement être de type Spectateur
      *                 limitée à 4 billets maximum
      * @param idEpreuve L'épreuve souhaitée par le spectateur
-     * @return
+     * @return 
      */
     @PostMapping("/selection")
     public ResponseEntity<selectionBilletDTO> selectionnerUnBillet(@RequestBody Personne personne, @RequestBody Long idEpreuve)

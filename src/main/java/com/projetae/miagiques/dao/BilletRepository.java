@@ -12,6 +12,8 @@ public interface BilletRepository extends CrudRepository<Billet, Long> {
 
     Collection<Billet> findAllBySpectateurId(Long idSpectateur) ;
 
+    Collection<Billet> findAllByEpreuveIs(Epreuve e) ;
+
     Billet findByIdBillet(Long idB);
 
     Collection<Billet> findByEpreuveAndEtatIs(Epreuve epreuve, StatutBillet etat);

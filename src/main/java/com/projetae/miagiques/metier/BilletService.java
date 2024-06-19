@@ -43,11 +43,18 @@ public class BilletService {
         return bi.getEpreuve().getIdEpreuve();
     }
 
+<<<<<<< HEAD
     public Billet getBilletAnnule(Epreuve epreuve) {
         return this.billetRepository.findByEpreuveAndEtatIs(epreuve, StatutBillet.ANNULE).stream().findAny().get();
     }
 
     public void saveBillet(Billet bi) {
         this.billetRepository.save(bi);
+=======
+    public void supprimerBillets(Collection<Billet> listeBillets) {
+        for (Billet b : listeBillets) {
+            this.billetRepository.deleteById(b.getIdBillet());
+        }
+>>>>>>> master
     }
 }
