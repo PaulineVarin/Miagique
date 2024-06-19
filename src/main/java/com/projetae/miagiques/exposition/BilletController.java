@@ -6,6 +6,7 @@ import com.projetae.miagiques.metier.BilletService;
 import com.projetae.miagiques.metier.EpreuveService;
 import com.projetae.miagiques.metier.PersonneService;
 import com.projetae.miagiques.metier.SpectateurService;
+import com.projetae.miagiques.utilities.BilletExceptions.BilletAchatImpossible;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletAnnulationImpossible;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
@@ -94,12 +95,9 @@ public class BilletController {
      */
     @GetMapping({"/{idBillet}/{idEpreuve}/validite"})
     public ResponseEntity<Boolean> valideUnBillet(@PathVariable("emailUtilisateur") String email, @PathVariable("idBillet") Long idBillet, @PathVariable("idEpreuve") Long idEpreuve) throws RoleIncorrect, CompteInexistant, BilletInexistant {
-        this.testerRole(email,Controleur.class) ;
-        return this.billetService.validerBillet(idBillet, idEpreuve) ;
+        this.testerRole(email,Controleur.class);
+        return this.billetService.validerBillet(idBillet, idEpreuve);
     }
-
-
-    /*----------------------*/
 
     /**
      * Accessible par le spectateur uniquement
@@ -111,72 +109,26 @@ public class BilletController {
      * @return
      */
     @PostMapping("/selection")
-    public ResponseEntity<SelectionBilletDTO> selectionnerUnBillet(@RequestBody Personne personne, @RequestBody Long idEpreuve)
-            throws  TooManyBilletsException, EpreuveInexistante {
+    public ResponseEntity<SelectionBilletDTO> selectionnerUnBillet(@PathVariable("emailUtilisateur") String email, @RequestBody Personne personne, @RequestBody Long idEpreuve)
+            throws TooManyBilletsException, EpreuveInexistante, RoleIncorrect, CompteInexistant {
 
-        Spectateur client;
-        Billet bi;
-        Epreuve ep;
-
-        if (personne == null || idEpreuve == null)
-            throw new IllegalArgumentException("At least, one parameter may be null");
-
-
-        client = (Spectateur) personne;
-        ep = this.epreuveService.getEpreuveByIdEpreuve(idEpreuve).get();
-
-        if (ep == null)
-            throw new EpreuveInexistante(HttpStatus.NOT_FOUND);
-
-        if (4 <= this.billetService.compteBilletPourEpreuve(client, ep)) {
-            throw new TooManyBilletsException(HttpStatus.CONFLICT);
-        }
-
-        bi = this.billetService.getBilletAnnule(ep);
-
-        if (bi != null) { // un billet annulé a été récupéré
-            // on le remet à l'état valide et on l'attribu au spectateur
-            bi.setSpectateur(client);
-        } else if (ep.getListeBillets().size() >= ep.getNbPlacesSpectateur()) {
-            //l'épreuve a atteint le nombre maximal de billets réservable
-            throw new TooManyBilletsException(HttpStatus.CONFLICT);
-        } else {
-            bi = new Billet(50f, StatutBillet.ANNULE, client, ep);
-        }
-
-        this.billetService.saveBillet(bi); //on save l'état du billet dans la base
-        return ResponseEntity.ok(new SelectionBilletDTO(bi.getPrix(), bi));
+        this.testerRole(email,Spectateur.class);
+        return this.billetService.selectionnerUnBillet((Spectateur) personne, idEpreuve);
     }
 
     /**
      *
      * @param idBillet
-     * @param idEpreuve
      * @param prixAchat
      * @return null si l'achat n'est pas réalisé
      *          sinon return le billet valide et lié au clien
      */
     @PostMapping("/achat")
-    public ResponseEntity<Billet> achatBillet(@RequestBody Long idBillet, @RequestBody Long idEpreuve, float prixAchat) {
+    public ResponseEntity<Billet> achatBillet(@PathVariable("emailUtilisateur") String email, @RequestBody Long idBillet, float prixAchat)
+            throws RoleIncorrect, CompteInexistant, BilletInexistant, BilletAchatImpossible {
 
-        Billet bi;
-        Epreuve ep;
-
-        if (idBillet == null || idEpreuve == null)
-            throw new IllegalArgumentException("billet or epreuve maybe null");
-
-        if ( (bi = this.billetService.getBillet(idBillet)) == null
-            || (ep = this.epreuveService.getEpreuveByIdEpreuve(idEpreuve).get()) == null
-            || bi.getEpreuve() != ep
-           )
-            throw new IllegalArgumentException("billet or epreuve may be not exists on the data base or may be this billet is not linked to epreuve");
-
-        if (prixAchat <= 0f)
-            return ResponseEntity.ok(null); //on accepte que le client n'ait pas payé
-
-        bi.setEtat(StatutBillet.VALIDE);
-        this.billetService.saveBillet(bi);
-        return ResponseEntity.ok(bi);
+        this.testerRole(email, Spectateur.class);
+        return this.billetService.achatBillet(idBillet, prixAchat);
     }
 
 }

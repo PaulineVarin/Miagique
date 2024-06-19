@@ -1,9 +1,6 @@
 package com.projetae.miagiques.utilities;
 
-import com.projetae.miagiques.utilities.BilletExceptions.BilletAnnulationImpossible;
-import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
-import com.projetae.miagiques.utilities.BilletExceptions.ExisteBillets;
-import com.projetae.miagiques.utilities.BilletExceptions.TooManyBilletsException;
+import com.projetae.miagiques.utilities.BilletExceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +29,8 @@ public class TraitementExceptionsBillet {
         return new ResponseEntity<>("Ce spectateur possède trop de billet", HttpStatus.CONFLICT);
     }
 
-
+    @ExceptionHandler(BilletAchatImpossible.class)
+    public ResponseEntity<String> gererBilletAchatImpossible(HttpServletRequest request, BilletAchatImpossible ex){
+        return new ResponseEntity<>("L'achat de ce billet n'est pas autorisé", ex.getStatus());
+    }
 }
