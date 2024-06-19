@@ -23,7 +23,7 @@ public class TraitementExceptionsEpreuve {
 
     @ExceptionHandler(EpreuveInexistante.class)
     public ResponseEntity<String> gererEpreuveInexistante(HttpServletRequest requete, EpreuveInexistante ex) {
-        return new ResponseEntity<>("Epreuve non trouvé dans la base", HttpStatus.NOT_FOUND) ;
+        return new ResponseEntity<>("Epreuve non trouvée dans la base", HttpStatus.NOT_FOUND) ;
     }
 
 

@@ -2,6 +2,7 @@ package com.projetae.miagiques.utilities;
 
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import com.projetae.miagiques.utilities.ResultatExceptions.ResultatExistant;
+import com.projetae.miagiques.utilities.ResultatExceptions.ResultatTempsNegatif;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,11 @@ public class TraitementExceptionsResultat {
 
     @ExceptionHandler(ResultatExistant.class)
     public ResponseEntity<String> gererResultatExistant(HttpServletRequest requete, ResultatExistant ex) {
-        return new ResponseEntity<>("Utilisateur inconnu", ex.getHttpStatus()) ;
+        return new ResponseEntity<>("Résultat déjà existant", ex.getHttpStatus()) ;
+    }
+
+    @ExceptionHandler(ResultatTempsNegatif.class)
+    public ResponseEntity<String> gererResultatTempsNegatif(HttpServletRequest requete, ResultatTempsNegatif ex) {
+        return new ResponseEntity<>("Temps négatif non authorisé", ex.getHttpStatus()) ;
     }
 }

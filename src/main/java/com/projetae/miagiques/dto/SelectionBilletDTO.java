@@ -3,6 +3,7 @@ package com.projetae.miagiques.dto;
 import com.projetae.miagiques.entities.Billet;
 
 public class SelectionBilletDTO {
+
     private float prixBillet;
     private Billet billet;
 

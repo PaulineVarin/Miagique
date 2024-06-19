@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class OrganisateurDTO {
+
+    private Long id;
     private String nom;
     private String prenom;
     private String email;

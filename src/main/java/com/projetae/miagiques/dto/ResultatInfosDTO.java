@@ -5,16 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collection;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class InfrastructureSportiveDTO {
+public class ResultatInfosDTO {
 
-    private Long idInfrastructure;
-    private String nom ;
-    private int capacite ;
-    private String adresse ;
+    private float temps;
+    private int points;
+    private int position;
+    private Long idEpreuve;
+    private Long idParticipant;
 }
