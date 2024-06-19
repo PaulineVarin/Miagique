@@ -7,6 +7,6 @@ import java.util.Collection;
 public interface EpreuveRepository extends CrudRepository<Epreuve, Long> {
     Epreuve findByNomIs(String nom) ;
 
-    Collection<Epreuve> findByNomIsAndAndIdEpreuveIsNot(String nom, Long idEpreuve) ;
+    Collection<Epreuve> findByNomIsAndIdEpreuveIsNot(String nom, Long idEpreuve) ;
 
 }

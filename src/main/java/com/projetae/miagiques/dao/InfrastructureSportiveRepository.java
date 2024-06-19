@@ -9,6 +9,5 @@ import java.util.Collection;
 
 public interface InfrastructureSportiveRepository extends CrudRepository<InfrastructureSportive, Long> {
     InfrastructureSportive findByNomIs(String nom) ;
-
-
+    Collection<InfrastructureSportive> findByNomIsAndIdInfrastructureIsNot(String nom, Long idInfrastructure) ;
 }

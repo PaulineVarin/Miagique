@@ -1,6 +1,7 @@
 package com.projetae.miagiques.dto;
 
 import com.projetae.miagiques.entities.Epreuve;
+import com.projetae.miagiques.entities.InfrastructureSportive;
 import com.projetae.miagiques.entities.StatistiqueEpreuve;
 import org.modelmapper.ModelMapper;
 
@@ -36,6 +37,19 @@ public class ObjectMapperUtils {
      */
     public static Collection<StatistiqueEpreuveDTO> mapAllStatistiques(final Collection<StatistiqueEpreuve> listeStatistiques, Class<StatistiqueEpreuveDTO> classeDTO) {
         return listeStatistiques.stream()
+                .map(entity -> modelMapper.map(entity, classeDTO))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * <p>Note: classeDTO doit posséder un constructeur sans arguments</p>
+     *
+     * @param listeInfrastructures liste qui contient les infrastructures
+     * @param classeDTO classe de mappage
+     * @return liste qui contient les infrastructures sous le format InfrastructureSportiveDTO
+     */
+    public static Collection<InfrastructureSportiveDTO> mapAllInfrastructures(final Collection<InfrastructureSportive> listeInfrastructures, Class<InfrastructureSportiveDTO> classeDTO) {
+        return listeInfrastructures.stream()
                 .map(entity -> modelMapper.map(entity, classeDTO))
                 .collect(Collectors.toList());
     }
