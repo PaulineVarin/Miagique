@@ -1,5 +1,6 @@
 package com.projetae.miagiques.exposition;
 
+import com.projetae.miagiques.entities.Epreuve;
 import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.entities.Organisateur;
 import com.projetae.miagiques.entities.Participant;
@@ -28,7 +29,7 @@ public class EpreuveController {
 
     @Autowired
     private PersonneService personneService;
-
+    
     /**
      *
      * @param mail représente le mail de la personne qui essaye de faire une action
@@ -111,7 +112,4 @@ public class EpreuveController {
         this.testerRole(email,Organisateur.class) ;
         return this.epreuveService.supprimerEpreuve(idEpreuve) ;
     }
-
-
-
 }

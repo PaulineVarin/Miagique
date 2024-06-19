@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/organisateur")
-
 public class OrganisateurController {
 
     @Autowired
