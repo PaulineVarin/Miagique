@@ -19,4 +19,8 @@ public class Spectateur extends Personne {
 
     @OneToMany(mappedBy = "spectateur")
     private Collection<Billet> billets;
+
+    public Spectateur(String email, String nom, String prenom) {
+        super(nom, prenom, email);
+    }
 }

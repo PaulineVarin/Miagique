@@ -1,6 +1,5 @@
 package com.projetae.miagiques.exposition;
 
-import com.projetae.miagiques.entities.Epreuve;
 import com.projetae.miagiques.dto.EpreuveDTO;
 import com.projetae.miagiques.entities.Organisateur;
 import com.projetae.miagiques.entities.Participant;
@@ -95,7 +94,7 @@ public class EpreuveController {
      * @throws ParseException
      */
     @PutMapping("/miseAjour/{idEpreuve}")
-    public EpreuveDTO miseAJourEpreuve(@PathVariable("emailUtilisateur") String email, @RequestBody EpreuveDTO epreuveInfos, @PathVariable("idEpreuve") Long idE) throws EpreuveInexistante, InfrastructureSportiveInexistante, CapaciteEpreuveSuperieur, RoleIncorrect, CompteInexistant, EpreuveExiste {
+    public EpreuveDTO miseAJourEpreuve(@PathVariable("emailUtilisateur") String email, @RequestBody EpreuveDTO epreuveInfos, @PathVariable("idEpreuve") Long idE) throws InfrastructureSportiveInexistante, CapaciteEpreuveSuperieur, RoleIncorrect, CompteInexistant, EpreuveExiste, EpreuveInexistante {
         this.testerRole(email,Organisateur.class) ;
         return this.epreuveService.miseAJourEpreuve(epreuveInfos, idE) ;
     }

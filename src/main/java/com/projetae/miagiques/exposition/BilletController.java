@@ -1,25 +1,28 @@
 package com.projetae.miagiques.exposition;
 
-import com.projetae.miagiques.entities.Controleur;
-import com.projetae.miagiques.entities.Personne;
+import com.projetae.miagiques.entities.*;
 import com.projetae.miagiques.metier.BilletService;
+import com.projetae.miagiques.metier.EpreuveService;
 import com.projetae.miagiques.metier.PersonneService;
+import com.projetae.miagiques.metier.SpectateurService;
+import com.projetae.miagiques.utilities.BilletExceptions.BilletAnnulationImpossible;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
+import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import com.projetae.miagiques.utilities.PersonneExceptions.RoleIncorrect;
 import com.projetae.miagiques.utilities.StatutBillet;
-import com.projetae.miagiques.utilities.spectateurExceptions.TooManyBilletsException;
+import com.projetae.miagiques.utilities.BilletExceptions.TooManyBilletsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.projetae.miagiques.entities.Billet;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/billet/{emailUtilisateur}")
@@ -29,6 +32,10 @@ public class BilletController {
     private BilletService billetService;
     @Autowired
     private PersonneService personneService;
+    @Autowired
+    private EpreuveService epreuveService;
+    @Autowired
+    private SpectateurService spectateurService;
 
 
     /**
@@ -48,8 +55,32 @@ public class BilletController {
         return true ;
     }
 
-    @Autowired
-    private EpreuveService epreuveService;
+
+    /**
+     *
+     * @param idSpectateur représente l'id d'un spectateur
+     * @return la liste des billets du spectateur
+     */
+    @GetMapping({"/{idSpectateur}/listerBillets"})
+    public Collection<Billet> getAllBillets(@PathVariable("emailUtilisateur") String email, @PathVariable("idSpectateur") Long idSpectateur) throws RoleIncorrect, CompteInexistant {
+        this.testerRole(email, Spectateur.class) ;
+        return this.spectateurService.getAllBillets(idSpectateur) ;
+    }
+
+    /**
+     *
+     * @param idBillet représente l'id d'un billet
+     * @param idSpectateur représente l'id d'un spectateur
+     * @return un message contenant le montant qui sera remboursé
+     * @throws BilletInexistant si l'on cherche à annuler un billet qui n'existe pas
+     * @throws BilletAnnulationImpossible si l'on ne peut pas annuler le billet
+     */
+    @PutMapping("/{idSpectateur}/annulerBillet/{id_billet}")
+    public String annulerBillet(@PathVariable("emailUtilisateur") String email, @PathVariable("id_billet") Long idBillet, @PathVariable("idSpectateur") Long idSpectateur) throws BilletInexistant, BilletAnnulationImpossible, RoleIncorrect, CompteInexistant {
+        this.testerRole(email, Spectateur.class) ;
+        return this.spectateurService.annulerBillet(idBillet, idSpectateur);
+    }
+
 
     /**
      * Renvoie si le billet est valide pour l'épreuve ou non
@@ -99,7 +130,7 @@ public class BilletController {
      */
     @PostMapping("/selection")
     public ResponseEntity<selectionBilletDTO> selectionnerUnBillet(@RequestBody Personne personne, @RequestBody Long idEpreuve)
-            throws RoleNotAllowException, TooManyBilletsException, EpreuveInexistanteException {
+            throws  TooManyBilletsException, EpreuveInexistante {
 
         Spectateur client;
         Billet bi;
@@ -108,15 +139,12 @@ public class BilletController {
         if (personne == null || idEpreuve == null)
             throw new IllegalArgumentException("At least, one parameter may be null");
 
-        if (!(personne instanceof Spectateur)) {
-            throw new RoleNotAllowException(HttpStatus.UNAUTHORIZED);
-        }
 
         client = (Spectateur) personne;
         ep = this.epreuveService.getEpreuveByIdEpreuve(idEpreuve).get();
 
         if (ep == null)
-            throw new EpreuveInexistanteException(HttpStatus.NOT_FOUND);
+            throw new EpreuveInexistante(HttpStatus.NOT_FOUND);
 
         if (4 <= compteBilletPourEpreuve(client, ep)) {
             throw new TooManyBilletsException(HttpStatus.CONFLICT);

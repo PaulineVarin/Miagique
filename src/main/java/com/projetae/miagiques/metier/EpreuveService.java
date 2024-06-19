@@ -4,6 +4,7 @@ import com.projetae.miagiques.dao.EpreuveRepository;
 import com.projetae.miagiques.dao.InfrastructureSportiveRepository;
 import com.projetae.miagiques.entities.Billet;
 import com.projetae.miagiques.entities.Epreuve;
+import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.Collection;
@@ -14,7 +15,6 @@ import com.projetae.miagiques.entities.InfrastructureSportive;
 import com.projetae.miagiques.entities.Resultat;
 import com.projetae.miagiques.utilities.EpreuveExceptions.CapaciteEpreuveSuperieur;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveExiste;
-import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
 import com.projetae.miagiques.utilities.InfrastructureSportiveExceptions.InfrastructureSportiveInexistante;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -62,11 +62,11 @@ public class EpreuveService {
             throw new EpreuveExiste();
         }
 
-        if (this.infrastructureSportiveRepository.findById(ep.getInsfrastructureSportiveId()).isEmpty()) {
+        if (this.infrastructureSportiveRepository.findById(ep.getInfrastructureSportiveId()).isEmpty()) {
             throw new InfrastructureSportiveInexistante();
         }
 
-        i = this.infrastructureSportiveRepository.findById(ep.getInsfrastructureSportiveId()).get() ;
+        i = this.infrastructureSportiveRepository.findById(ep.getInfrastructureSportiveId()).get() ;
         if(ep.getNbPlacesSpectateur() > i.getCapacite()) {
             throw new CapaciteEpreuveSuperieur();
         }
@@ -84,7 +84,7 @@ public class EpreuveService {
         ModelMapper modelMapper;
 
         if(this.epreuveRepository.findById(idEpreuve).isEmpty()) {
-            throw new EpreuveInexistante();
+            throw new EpreuveInexistante(HttpStatus.NOT_FOUND);
         }
 
         e = this.epreuveRepository.findById(idEpreuve).get();
@@ -93,11 +93,11 @@ public class EpreuveService {
             throw new EpreuveExiste();
         }
 
-        if(this.infrastructureSportiveRepository.findById(epUpdate.getInsfrastructureSportiveId()).isEmpty()) {
+        if(this.infrastructureSportiveRepository.findById(epUpdate.getInfrastructureSportiveId()).isEmpty()) {
             throw new InfrastructureSportiveInexistante();
         }
 
-        i = this.infrastructureSportiveRepository.findById(epUpdate.getInsfrastructureSportiveId()).get();
+        i = this.infrastructureSportiveRepository.findById(epUpdate.getInfrastructureSportiveId()).get();
         if(epUpdate.getNbPlacesSpectateur() > i.getCapacite()) {
             throw new CapaciteEpreuveSuperieur();
         }
@@ -116,7 +116,7 @@ public class EpreuveService {
         Collection<Resultat> listeResultats;
 
         if(this.epreuveRepository.findById(idEpreuve).isEmpty()) {
-            throw new EpreuveInexistante() ;
+            throw new EpreuveInexistante(HttpStatus.NOT_FOUND) ;
         }
 
         e = this.epreuveRepository.findById(idEpreuve).get() ;

@@ -1,11 +1,12 @@
-package com.projetae.miagiques.utilities.PersonneExceptions;
+package com.projetae.miagiques.utilities.BilletExceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class RoleNotAllowException extends  Exception {
+public class TooManyBilletsException extends Exception {
+
     private HttpStatus httpStatus;
 
-    public RoleNotAllowException(HttpStatus httpStatus) {
+    public TooManyBilletsException(HttpStatus httpStatus) {
         this.httpStatus = httpStatus;
     }
 

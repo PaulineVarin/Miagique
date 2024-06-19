@@ -1,6 +1,5 @@
 package com.projetae.miagiques.utilities;
 
-import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
 import com.projetae.miagiques.utilities.EpreuveExceptions.CapaciteEpreuveSuperieur;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveExiste;
 import com.projetae.miagiques.utilities.EpreuveExceptions.EpreuveInexistante;
@@ -9,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.text.ParseException;
 
 @ControllerAdvice
 public class TraitementExceptionsEpreuve {

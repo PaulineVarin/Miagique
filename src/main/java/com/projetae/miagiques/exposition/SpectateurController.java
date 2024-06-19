@@ -1,19 +1,19 @@
 package com.projetae.miagiques.exposition;
 
-import com.projetae.miagiques.entities.Billet;
+import com.projetae.miagiques.dto.SpectateurDTO;
+import com.projetae.miagiques.entities.Organisateur;
 import com.projetae.miagiques.entities.Personne;
-import com.projetae.miagiques.entities.Spectateur;
 import com.projetae.miagiques.metier.PersonneService;
 import com.projetae.miagiques.metier.SpectateurService;
-import com.projetae.miagiques.utilities.BilletExceptions.BilletAnnulationImpossible;
-import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
+import com.projetae.miagiques.utilities.PersonneExceptions.CompteExiste;
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
 import com.projetae.miagiques.utilities.PersonneExceptions.RoleIncorrect;
+import com.projetae.miagiques.utilities.BilletExceptions.ExisteBillets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/spectateur")
@@ -40,28 +40,18 @@ public class SpectateurController {
         }
         return true ;
     }
-    /**
-     *
-     * @param idSpectateur représente l'id d'un spectateur
-     * @return la liste des billets du spectateur
-     */
-    @GetMapping({"/{id_spectateur}/listerBillets"})
-    public Collection<Billet> getAllBillets(@PathVariable("emailUtilisateur") String email, @PathVariable("id_spectateur") Long idSpectateur) throws RoleIncorrect, CompteInexistant {
-        this.testerRole(email, Spectateur.class) ;
-        return this.spectateurService.getAllBillets(idSpectateur) ;
+
+
+    @PostMapping("/creationSpectateur")
+    public SpectateurDTO creerSpectateur(@RequestBody SpectateurDTO spectateurInfos) throws CompteExiste {
+        return this.spectateurService.creerSpectateur(spectateurInfos);
     }
 
-    /**
-     *
-     * @param idBillet représente l'id d'un billet
-     * @param idSpectateur représente l'id d'un spectateur
-     * @return un message contenant le montant qui sera remboursé
-     * @throws BilletInexistant si l'on cherche à annuler un billet qui n'existe pas
-     * @throws BilletAnnulationImpossible si l'on ne peut pas annuler le billet
-     */
-    @PutMapping("/{id_spectateur}/annulerBillet/{id_billet}")
-    public String annulerBillet(@PathVariable("emailUtilisateur") String email, @PathVariable("id_billet") Long idBillet, @PathVariable("id_spectateur") Long idSpectateur) throws BilletInexistant, BilletAnnulationImpossible, RoleIncorrect, CompteInexistant {
-        this.testerRole(email, Spectateur.class) ;
-        return this.spectateurService.annulerBillet(idBillet, idSpectateur);
+
+    @DeleteMapping("/{emailUtilisateur}/suppressionSpectateur/{idSpectateur}")
+    public ResponseEntity<String> supprimerSpectateur(@PathVariable("emailUtilisateur") String email, @PathVariable("idSpectateur") Long idSpectateur) throws RoleIncorrect, CompteInexistant, ExisteBillets {
+        this.testerRole(email, Organisateur.class) ;
+        return this.spectateurService.supprimerSpectateur(idSpectateur);
     }
+
 }
