@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StatistiqueEpreuveDTO {
-    private Long idStatistiqueEpreuve;
     private EpreuveDTO epreuve;
     private int nbPlacesRestantes;
     private int nbPlaces;
