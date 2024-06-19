@@ -19,6 +19,4 @@ public class InfrastructureSportiveDTO {
     private int capacite ;
 
     private String adresse ;
-
-    private Collection<Long> listeIdEpreuves;
 }

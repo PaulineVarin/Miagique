@@ -1,13 +1,12 @@
 package com.projetae.miagiques.exposition;
 
+import com.projetae.miagiques.entities.Controleur;
 import com.projetae.miagiques.entities.Personne;
-import com.projetae.miagiques.entities.Spectateur;
-import com.projetae.miagiques.entities.Epreuve;
 import com.projetae.miagiques.metier.BilletService;
-import com.projetae.miagiques.metier.EpreuveService;
+import com.projetae.miagiques.metier.PersonneService;
 import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
-import com.projetae.miagiques.utilities.EpreuveInexistanteException;
-import com.projetae.miagiques.utilities.PersonneExceptions.RoleNotAllowException;
+import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
+import com.projetae.miagiques.utilities.PersonneExceptions.RoleIncorrect;
 import com.projetae.miagiques.utilities.StatutBillet;
 import com.projetae.miagiques.utilities.spectateurExceptions.TooManyBilletsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +19,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 @RestController
-@RequestMapping("/billets/{emailUtilisateur}")
+@RequestMapping("/billet/{emailUtilisateur}")
 public class BilletController {
 
     @Autowired
     private BilletService billetService;
+    @Autowired
+    private PersonneService personneService;
+
+
+    /**
+     *
+     * @param mail représente le mail de la personne qui essaye de faire une action
+     * @param type représente la classe a laquelle devra appartenir l'utilisateur
+     * @return true si l'action est valide avec le compte mentionné
+     * @throws CompteInexistant si le compte avec l'adresse email mentionné n'existe pas
+     * @throws RoleIncorrect si le role ne correspond pas a la tache qu'on essaye de faire
+     */
+    public <T> boolean testerRole(String mail, Class<T> type) throws CompteInexistant, RoleIncorrect {
+        ArrayList<Personne> listeRolesPersonne = new ArrayList<>(this.personneService.seConnecter(mail)) ;
+
+        if (listeRolesPersonne.stream().noneMatch(p -> type.isInstance(p))){
+            throw new RoleIncorrect();
+        }
+        return true ;
+    }
 
     @Autowired
     private EpreuveService epreuveService;
@@ -40,8 +61,10 @@ public class BilletController {
      * @throws BilletInexistant l'identifiant précisé n'existe pas dans la base de données
      */
     @GetMapping({"/{idBillet}/{idEpreuve}/validite"})
-    public ResponseEntity<Boolean> valideUnBillet(@PathVariable("idBillet") Long idBillet, @PathVariable("idEpreuve") Long idEpreuve)
-            throws BilletInexistant {
+    public ResponseEntity<Boolean> valideUnBillet(@PathVariable("emailUtilisateur") String email, @PathVariable("idBillet") Long idBillet, @PathVariable("idEpreuve") Long idEpreuve)
+            throws BilletInexistant, RoleIncorrect, CompteInexistant {
+
+        this.testerRole(email, Controleur.class) ;
 
         StatutBillet etat;
         boolean isBilletValide;
