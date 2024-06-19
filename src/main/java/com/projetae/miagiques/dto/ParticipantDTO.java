@@ -7,9 +7,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 public class ParticipantDTO {
+    private Long idParticipant;
     private String nom;
     private String prenom;
     private String email;

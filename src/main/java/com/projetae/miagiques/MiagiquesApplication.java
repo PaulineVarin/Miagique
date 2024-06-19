@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Map;
-
 import static java.util.Map.entry;
 
 @SpringBootApplication
@@ -44,14 +42,16 @@ public class MiagiquesApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		BilletService billetService = new BilletService(billetRepository, epreuveRepository, spectateurRepository) ;
-		ResultatService resultatService = new ResultatService(resultatRepository) ;
+    
+		BilletService billetService = new BilletService(billetRepository, epreuveRepository, spectateurRepository);
+		ResultatService resultatService = new ResultatService(resultatRepository, epreuveRepository, participantRepository);
+    
 		/*--- Creation Infrastructure */
 		InfrastructureSportiveService infrastructureSportiveService = new InfrastructureSportiveService(infrastructureSportiveRepository) ;
-		InfrastructureSportiveDTO infrastructureSportiveDTO1 = new InfrastructureSportiveDTO("Stade",100,"Toulouse") ;
-		InfrastructureSportiveDTO infrastructureSportiveDTO2 = new InfrastructureSportiveDTO("Stade foot",30,"Toulouse") ;
-		InfrastructureSportiveDTO infrastructureSportiveDTO3 = new InfrastructureSportiveDTO("Stade tennis ",10,"Toulouse") ;
-		InfrastructureSportiveDTO infrastructureSportiveDTO4 = new InfrastructureSportiveDTO("Piscine",5,"Toulouse") ;
+		InfrastructureSportiveDTO infrastructureSportiveDTO1 = new InfrastructureSportiveDTO(1l, "Stade",100,"Toulouse") ;
+		InfrastructureSportiveDTO infrastructureSportiveDTO2 = new InfrastructureSportiveDTO(2l, "Stade foot",30,"Toulouse") ;
+		InfrastructureSportiveDTO infrastructureSportiveDTO3 = new InfrastructureSportiveDTO(3l, "Stade tennis ",10,"Toulouse") ;
+		InfrastructureSportiveDTO infrastructureSportiveDTO4 = new InfrastructureSportiveDTO(4l, "Piscine",5,"Toulouse") ;
 
 		infrastructureSportiveService.creationInfrastructure(infrastructureSportiveDTO1) ;
 		infrastructureSportiveService.creationInfrastructure(infrastructureSportiveDTO2) ;
@@ -76,21 +76,21 @@ public class MiagiquesApplication implements CommandLineRunner {
 
 		/*--- Creation Organisateur */
 		OrganisateurService organisateurService = new OrganisateurService(organisateurRepository);
-		OrganisateurDTO organisateurDTO = new OrganisateurDTO("VARIN","PAULINE","pauline@mail.com") ;
+		OrganisateurDTO organisateurDTO = new OrganisateurDTO(1l, "VARIN","PAULINE","pauline@mail.com") ;
 		organisateurService.creationOrganisateur(organisateurDTO) ;
 
 		/*--- Creation Spectateur */
 		SpectateurService spectateurService = new SpectateurService(billetRepository,spectateurRepository) ;
-		SpectateurDTO spectateurDTO1 = new SpectateurDTO("MARS","TOTO","toto@mail.com",null) ;
-		SpectateurDTO spectateurDTO2 = new SpectateurDTO("AVRIL","TATA","tata@mail.com",null) ;
+		SpectateurDTO spectateurDTO1 = new SpectateurDTO(1l, "MARS","TOTO","toto@mail.com",null) ;
+		SpectateurDTO spectateurDTO2 = new SpectateurDTO(1l, "AVRIL","TATA","tata@mail.com",null) ;
 
 		spectateurService.creerSpectateur(spectateurDTO1) ;
 		spectateurService.creerSpectateur(spectateurDTO2) ;
 
 		/*--- Creation Controleur */
 		ControleurService controleurService = new ControleurService(controleurRepository);
-		ControleurDTO controleurDTO1 = new ControleurDTO("NAYET","MORGAN","morgan@mail.com") ;
-		ControleurDTO controleurDTO2 = new ControleurDTO("VARIN","PAULINE","pauline@mail.com") ;
+		ControleurDTO controleurDTO1 = new ControleurDTO(1l, "NAYET","MORGAN","morgan@mail.com") ;
+		ControleurDTO controleurDTO2 = new ControleurDTO(1l, "VARIN","PAULINE","pauline@mail.com") ;
 
 		controleurService.creerControleur(controleurDTO1) ;
 		controleurService.creerControleur(controleurDTO2) ;

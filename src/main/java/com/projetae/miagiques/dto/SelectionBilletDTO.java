@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SelectionBilletDTO {
+
     private float prixBillet;
     private Long idBillet;
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class TraitementExceptionsPersonne {
+
     @ExceptionHandler(CompteInexistant.class)
     public ResponseEntity<String> gererCompteInexistant(HttpServletRequest requete, CompteInexistant ex) {
         return new ResponseEntity<>("Utilisateur inconnu", HttpStatus.NOT_FOUND) ;

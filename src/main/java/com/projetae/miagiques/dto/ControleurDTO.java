@@ -10,6 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ControleurDTO {
+
+    private Long id;
     private String nom;
     private String prenom;
     private String email;
