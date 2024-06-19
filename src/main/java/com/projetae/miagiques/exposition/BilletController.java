@@ -1,5 +1,6 @@
 package com.projetae.miagiques.exposition;
 
+import com.projetae.miagiques.dto.SelectionBilletDTO;
 import com.projetae.miagiques.entities.*;
 import com.projetae.miagiques.metier.BilletService;
 import com.projetae.miagiques.metier.EpreuveService;
@@ -92,32 +93,13 @@ public class BilletController {
      * @throws BilletInexistant l'identifiant précisé n'existe pas dans la base de données
      */
     @GetMapping({"/{idBillet}/{idEpreuve}/validite"})
-    public ResponseEntity<Boolean> valideUnBillet(@PathVariable("emailUtilisateur") String email, @PathVariable("idBillet") Long idBillet, @PathVariable("idEpreuve") Long idEpreuve)
-            throws BilletInexistant, RoleIncorrect, CompteInexistant {
-
-        this.testerRole(email, Controleur.class) ;
-
-        StatutBillet etat;
-        boolean isBilletValide;
-        Long idEpreuveBillet;
-
-        etat = this.billetService.getEtatBillet(idBillet);
-        isBilletValide = StatutBillet.VALIDE == etat;
-
-        if (!isBilletValide) {
-            return ResponseEntity.ok(isBilletValide);
-        }
-
-        try {
-            idEpreuveBillet = this.billetService.getIdEpreuveBillet(idBillet);
-        } catch (BilletInexistant e) {
-            throw new BilletInexistant(HttpStatus.BAD_GATEWAY);
-        }
-
-        isBilletValide = idEpreuve.equals(idEpreuveBillet);
-
-        return ResponseEntity.ok(isBilletValide);
+    public ResponseEntity<Boolean> valideUnBillet(@PathVariable("emailUtilisateur") String email, @PathVariable("idBillet") Long idBillet, @PathVariable("idEpreuve") Long idEpreuve) throws RoleIncorrect, CompteInexistant, BilletInexistant {
+        this.testerRole(email,Controleur.class) ;
+        return this.billetService.validerBillet(idBillet, idEpreuve) ;
     }
+
+
+    /*----------------------*/
 
     /**
      * Accessible par le spectateur uniquement
@@ -129,7 +111,7 @@ public class BilletController {
      * @return
      */
     @PostMapping("/selection")
-    public ResponseEntity<selectionBilletDTO> selectionnerUnBillet(@RequestBody Personne personne, @RequestBody Long idEpreuve)
+    public ResponseEntity<SelectionBilletDTO> selectionnerUnBillet(@RequestBody Personne personne, @RequestBody Long idEpreuve)
             throws  TooManyBilletsException, EpreuveInexistante {
 
         Spectateur client;
@@ -146,11 +128,11 @@ public class BilletController {
         if (ep == null)
             throw new EpreuveInexistante(HttpStatus.NOT_FOUND);
 
-        if (4 <= compteBilletPourEpreuve(client, ep)) {
+        if (4 <= this.billetService.compteBilletPourEpreuve(client, ep)) {
             throw new TooManyBilletsException(HttpStatus.CONFLICT);
         }
 
-        bi = getUnBilletAnnule(ep);
+        bi = this.billetService.getBilletAnnule(ep);
 
         if (bi != null) { // un billet annulé a été récupéré
             // on le remet à l'état valide et on l'attribu au spectateur
@@ -163,7 +145,7 @@ public class BilletController {
         }
 
         this.billetService.saveBillet(bi); //on save l'état du billet dans la base
-        return ResponseEntity.ok(new selectionBilletDTO(bi.getPrix(), bi));
+        return ResponseEntity.ok(new SelectionBilletDTO(bi.getPrix(), bi));
     }
 
     /**
@@ -197,60 +179,4 @@ public class BilletController {
         return ResponseEntity.ok(bi);
     }
 
-    private class selectionBilletDTO {
-        private float prixBillet;
-        private Billet billet;
-
-        //TODO utiliser le Mapper de Pauline (tout du moins l'exemple du mapper de pauline dans EpreuveService)
-        public selectionBilletDTO(float prixBillet, Billet billet){
-            this.prixBillet = prixBillet;
-            this.billet = billet;
-        }
-    }
-
-    /**
-     * Compteur de billets valide pour une épreuve donnée
-     *
-     * @param client le spectateur
-     * @param epreuve l'épreuve selectionnée par le client
-     * @return le combre de billet valide que le client a déjà pour cette épreuve
-     */
-    private int compteBilletPourEpreuve(Spectateur client, Epreuve epreuve) {
-
-        int compte;
-
-        if (client == null || epreuve == null)
-            throw new IllegalArgumentException("parameters may be null");
-
-        compte = 0;
-
-        for (Billet b : client.getBillets())
-            if (epreuve == b.getEpreuve() && StatutBillet.VALIDE == b.getEtat())
-                compte++;
-
-        return compte;
-    }
-
-    /**
-     * Selectionne un billet annulé dans une épreuve
-     *
-     * @param epreuve sélectionnée
-     * @return null si aucun billet annulé pour cette épreuve
-     *         sinon retourne le premier billet annulé venu
-     */
-    private Billet getUnBilletAnnule(Epreuve epreuve) {
-
-        if (epreuve == null)
-            throw new IllegalArgumentException("One parameter may be null");
-        /*
-        // si il n'existe pas de billet annulaaaaay
-        Stream streamBilletsEpreuve = ((Stream)epreuve.getListeBillets()).filter(b -> StatutBillet.ANNULE == ((Billet) b).getEtat());
-        if (streamBilletsEpreuve.count() == 0)
-            return null;
-
-        return ((List<Billet>)streamBilletsEpreuve.toList()).get(0);
-         */
-
-        return this.billetService.getBilletAnnule(epreuve);
-    }
 }
