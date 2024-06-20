@@ -91,5 +91,23 @@ public class ObjectMapperUtils {
                 .collect(Collectors.toList());
     }
 
+    public static Collection<DelegationDTO> mapAllDelegations(final Collection<Delegation> listeDelegation, Class<DelegationDTO> classeDTO) {
+        Collection<DelegationDTO> listeDelegationDTO = new ArrayList<>() ;
+        ModelMapper modelMapper;
+        modelMapper = new ModelMapper();
+
+        for(Delegation d:listeDelegation) {
+            DelegationDTO di = new DelegationDTO();
+            modelMapper.map(d,di);
+            for(Participant p: d.getParticipants()) {
+                di.getIdParticipants().add(p.getId()) ;
+            }
+            listeDelegationDTO.add(di) ;
+        }
+
+        return listeDelegationDTO ;
+
+    }
+
 
 }

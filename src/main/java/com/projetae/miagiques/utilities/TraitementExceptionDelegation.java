@@ -1,6 +1,7 @@
 package com.projetae.miagiques.utilities;
 
 import com.projetae.miagiques.utilities.BilletExceptions.BilletInexistant;
+import com.projetae.miagiques.utilities.DelegationExceptions.DelegationAvecParticipant;
 import com.projetae.miagiques.utilities.DelegationExceptions.DelegationExistante;
 import com.projetae.miagiques.utilities.DelegationExceptions.DelegationInexistante;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,5 +20,10 @@ public class TraitementExceptionDelegation {
     @ExceptionHandler(DelegationInexistante.class)
     public ResponseEntity<String> gererDelegationInexistante(HttpServletRequest requete, DelegationInexistante ex) {
         return new ResponseEntity<>("La délégation n'existe pas", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DelegationAvecParticipant.class)
+    public ResponseEntity<String> gererDelegationAvecParticipant(HttpServletRequest requete, DelegationAvecParticipant ex) {
+        return new ResponseEntity<>("La délégation ne peut pas être supprimée dû à la présence de participants en son sein", ex.getHttpStatus());
     }
 }

@@ -1,11 +1,11 @@
 package com.projetae.miagiques.exposition;
 
-import com.projetae.miagiques.entities.Controleur;
-import com.projetae.miagiques.entities.Delegation;
-import com.projetae.miagiques.entities.Organisateur;
-import com.projetae.miagiques.entities.Personne;
+import com.projetae.miagiques.dto.DelegationDTO;
+import com.projetae.miagiques.dto.EpreuveDTO;
+import com.projetae.miagiques.entities.*;
 import com.projetae.miagiques.metier.DelegationService;
 import com.projetae.miagiques.metier.PersonneService;
+import com.projetae.miagiques.utilities.DelegationExceptions.DelegationAvecParticipant;
 import com.projetae.miagiques.utilities.DelegationExceptions.DelegationExistante;
 import com.projetae.miagiques.utilities.DelegationExceptions.DelegationInexistante;
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/delegation/{emailUtilisateur}")
@@ -43,6 +44,12 @@ public class DelegationController {
         return true ;
     }
 
+    @GetMapping("/consulterDelegations")
+    public Collection<DelegationDTO> consulterDelegations(@PathVariable("emailUtilisateur") String email) throws RoleIncorrect, CompteInexistant {
+        this.testerRole(email, Organisateur.class) ;
+        return this.delegationService.consulterDelegations() ;
+    }
+
     @PostMapping("/creerDelegation")
     public Delegation creerDelegation(@PathVariable("emailUtilisateur") String email, @RequestBody String nom) throws DelegationExistante, RoleIncorrect, CompteInexistant {
         this.testerRole(email, Organisateur.class) ;
@@ -50,7 +57,7 @@ public class DelegationController {
     }
 
     @DeleteMapping("/supprimerDelegation")
-    public ResponseEntity<String> supprimerDelegation(@PathVariable("emailUtilisateur") String email, @RequestBody Long idD) throws DelegationInexistante, RoleIncorrect, CompteInexistant {
+    public ResponseEntity<String> supprimerDelegation(@PathVariable("emailUtilisateur") String email, @RequestBody Long idD) throws DelegationInexistante, RoleIncorrect, CompteInexistant, DelegationAvecParticipant {
         this.testerRole(email, Organisateur.class) ;
         return this.delegationService.supprimerDelegation(idD);
     }
