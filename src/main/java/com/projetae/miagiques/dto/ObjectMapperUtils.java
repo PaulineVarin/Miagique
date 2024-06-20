@@ -1,9 +1,6 @@
 package com.projetae.miagiques.dto;
 
-import com.projetae.miagiques.entities.Billet;
-import com.projetae.miagiques.entities.Epreuve;
-import com.projetae.miagiques.entities.InfrastructureSportive;
-import com.projetae.miagiques.entities.StatistiqueEpreuve;
+import com.projetae.miagiques.entities.*;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
@@ -77,6 +74,25 @@ public class ObjectMapperUtils {
         }
 
         return listeBilletsDTO ;
+
+    }
+
+
+    public static Collection<DelegationDTO> mapAllDelegations(final Collection<Delegation> listeDelegation, Class<DelegationDTO> classeDTO) {
+        Collection<DelegationDTO> listeDelegationDTO = new ArrayList<>() ;
+        ModelMapper modelMapper;
+        modelMapper = new ModelMapper();
+
+        for(Delegation d:listeDelegation) {
+            DelegationDTO di = new DelegationDTO();
+            modelMapper.map(d,di);
+            for(Participant p: d.getParticipants()) {
+                di.getIdParticipants().add(p.getId()) ;
+            }
+            listeDelegationDTO.add(di) ;
+        }
+
+        return listeDelegationDTO ;
 
     }
 
