@@ -78,6 +78,19 @@ public class ObjectMapperUtils {
     }
 
 
+    /**
+     * <p>Note: classeDTO doit posséder un constructeur sans arguments</p>
+     *
+     * @param listeParticipants liste qui contient les participants
+     * @param classeDTO classe de mappage
+     * @return liste qui contient les participants sous le format ParticipantDTO
+     */
+    public static Collection<ParticipantDTO> mapAllParticipants(final Collection<Participant> listeParticipants, Class<ParticipantDTO> classeDTO) {
+        return listeParticipants.stream()
+                .map(entity -> modelMapper.map(entity, classeDTO))
+                .collect(Collectors.toList());
+    }
+
     public static Collection<DelegationDTO> mapAllDelegations(final Collection<Delegation> listeDelegation, Class<DelegationDTO> classeDTO) {
         Collection<DelegationDTO> listeDelegationDTO = new ArrayList<>() ;
         ModelMapper modelMapper;
@@ -95,9 +108,6 @@ public class ObjectMapperUtils {
         return listeDelegationDTO ;
 
     }
-
-
-
 
 
 }

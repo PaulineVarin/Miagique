@@ -4,6 +4,7 @@ import com.projetae.miagiques.dao.DelegationRepository;
 import com.projetae.miagiques.dao.EpreuveRepository;
 import com.projetae.miagiques.dao.ParticipantRepository;
 import com.projetae.miagiques.dao.ResultatRepository;
+import com.projetae.miagiques.dto.ObjectMapperUtils;
 import com.projetae.miagiques.dto.ParticipantDTO;
 import com.projetae.miagiques.entities.Delegation;
 import com.projetae.miagiques.entities.Epreuve;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
@@ -97,5 +100,11 @@ public class ParticipantService {
             this.participantRepository.save(participant);
             return new ResponseEntity<>("Desengagement avec forfait OK", HttpStatus.OK);
         }
+    }
+
+    public Collection<ParticipantDTO> listerParticipant() {
+        Collection<Participant> listeParticipants = new ArrayList<>();
+        this.participantRepository.findAll().forEach(listeParticipants::add);
+        return ObjectMapperUtils.mapAllParticipants(listeParticipants, ParticipantDTO.class);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 @RestController
@@ -95,4 +96,8 @@ public class ParticipantController {
         return this.participantService.desengagementEpreuve(idEpreuve, idParticipant);
     }
 
+    @GetMapping("/{emailUtilisateur}/listerParticipants")
+    public Collection<ParticipantDTO> listerParticipant() {
+        return this.participantService.listerParticipant();
+    }
 }
