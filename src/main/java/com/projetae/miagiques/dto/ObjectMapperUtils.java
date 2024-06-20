@@ -29,6 +29,18 @@ public class ObjectMapperUtils {
 
     /**
      * <p>Note: classeDTO doit posséder un constructeur sans arguments</p>
+     * @param listeResultats liste de résultats
+     * @param classeDto classe de mappage
+     * @return liste de résultats sous le format ResultatDTO
+     */
+    public static Collection<ResultatDTO> mapAllResultats(final Collection<Resultat> listeResultats, Class<ResultatDTO> classeDto) {
+        return listeResultats.stream()
+                .map(entity -> modelMapper.map(entity, classeDto))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * <p>Note: classeDTO doit posséder un constructeur sans arguments</p>
      *
      * @param listeStatistiques liste qui contient les statistiques
      * @param classeDTO classe de mappage
