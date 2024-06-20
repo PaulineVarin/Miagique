@@ -1,9 +1,6 @@
 package com.projetae.miagiques.dto;
 
-import com.projetae.miagiques.entities.Billet;
-import com.projetae.miagiques.entities.Epreuve;
-import com.projetae.miagiques.entities.InfrastructureSportive;
-import com.projetae.miagiques.entities.StatistiqueEpreuve;
+import com.projetae.miagiques.entities.*;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
@@ -81,7 +78,18 @@ public class ObjectMapperUtils {
     }
 
 
-
+    /**
+     * <p>Note: classeDTO doit posséder un constructeur sans arguments</p>
+     *
+     * @param listeParticipants liste qui contient les participants
+     * @param classeDTO classe de mappage
+     * @return liste qui contient les participants sous le format ParticipantDTO
+     */
+    public static Collection<ParticipantDTO> mapAllParticipants(final Collection<Participant> listeParticipants, Class<ParticipantDTO> classeDTO) {
+        return listeParticipants.stream()
+                .map(entity -> modelMapper.map(entity, classeDTO))
+                .collect(Collectors.toList());
+    }
 
 
 }
