@@ -3,6 +3,8 @@ package com.projetae.miagiques.metier;
 import com.projetae.miagiques.dao.EpreuveRepository;
 import com.projetae.miagiques.dao.ParticipantRepository;
 import com.projetae.miagiques.dao.ResultatRepository;
+import com.projetae.miagiques.dto.EpreuveDTO;
+import com.projetae.miagiques.dto.ObjectMapperUtils;
 import com.projetae.miagiques.dto.ResultatDTO;
 import com.projetae.miagiques.dto.ResultatInfosDTO;
 import com.projetae.miagiques.entities.Epreuve;
@@ -34,6 +36,22 @@ public class ResultatService {
         for (Resultat r : listeResultats) {
             this.resultatRepository.deleteById(r.getIdResultat());
         }
+    }
+
+    public Collection<ResultatDTO> getAllResultatsParticipant(Long idParticipant)
+            throws ParticipantInexistant {
+
+        Participant part;
+
+        if (idParticipant == null)
+            throw new IllegalArgumentException("idParticipant may be null");
+
+        if (this.participantRepository.findById(idParticipant).isEmpty())
+            throw new ParticipantInexistant(HttpStatus.NOT_FOUND);
+
+        part = this.participantRepository.findById(idParticipant).get();
+
+        return ObjectMapperUtils.mapAllResultats(this.resultatRepository.findByParticipant(part), ResultatDTO.class);
     }
 
     public ResponseEntity<ResultatDTO> publierResultat(ResultatInfosDTO resultatInfos) throws EpreuveInexistante, ParticipantInexistant, ResultatExistant, ResultatTempsNegatif {
