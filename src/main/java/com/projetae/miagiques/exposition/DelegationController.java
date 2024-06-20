@@ -6,6 +6,7 @@ import com.projetae.miagiques.entities.Organisateur;
 import com.projetae.miagiques.entities.Personne;
 import com.projetae.miagiques.metier.DelegationService;
 import com.projetae.miagiques.metier.PersonneService;
+import com.projetae.miagiques.utilities.DelegationExceptions.DelegationAvecParticipant;
 import com.projetae.miagiques.utilities.DelegationExceptions.DelegationExistante;
 import com.projetae.miagiques.utilities.DelegationExceptions.DelegationInexistante;
 import com.projetae.miagiques.utilities.PersonneExceptions.CompteInexistant;
@@ -50,7 +51,7 @@ public class DelegationController {
     }
 
     @DeleteMapping("/supprimerDelegation")
-    public ResponseEntity<String> supprimerDelegation(@PathVariable("emailUtilisateur") String email, @RequestBody Long idD) throws DelegationInexistante, RoleIncorrect, CompteInexistant {
+    public ResponseEntity<String> supprimerDelegation(@PathVariable("emailUtilisateur") String email, @RequestBody Long idD) throws DelegationInexistante, RoleIncorrect, CompteInexistant, DelegationAvecParticipant {
         this.testerRole(email, Organisateur.class) ;
         return this.delegationService.supprimerDelegation(idD);
     }
